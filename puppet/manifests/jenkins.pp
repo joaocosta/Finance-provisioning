@@ -1,6 +1,7 @@
 include jenkins
 
-package { "java-1.7.0-openjdk":
+# These packages are Fedora specific and required by jenkins.  The font package under debian is "ttf-dejavu"
+package { ["java-1.7.0-openjdk", "dejavu-sans-fonts"]:
     ensure  => latest,
 }
 
