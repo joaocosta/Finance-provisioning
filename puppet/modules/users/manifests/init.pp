@@ -15,8 +15,6 @@
 # [Remember: No empty lines between comments and class definition]
 class users {
 
-    package { "libaugeas-ruby": ensure => installed }
-
     define sudonopasswd( ) {
         augeas { "sudo${name}":
             context => "/files/etc/sudoers",
