@@ -10,18 +10,24 @@ file { "/etc/localtime":
 
 file { "/home/joao/sites":
     ensure      => directory,
+    owner       => "joao",
+    group       => "joao",
     mode        => 0755,
     require     => User["joao"],
 }
 
 file { "/home/joao/sites/wordscheater.com":
     ensure      => directory,
+    owner       => "joao",
+    group       => "joao",
     mode        => 0755,
     require     => File["/home/joao/sites"],
 }
 
 file { "/home/joao/sites/wordscheater.com/web":
     ensure      => directory,
+    owner       => "joao",
+    group       => "joao",
     mode        => 0755,
     require     => File["/home/joao/sites/wordscheater.com"],
 }
