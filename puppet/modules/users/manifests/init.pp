@@ -81,7 +81,6 @@ class users {
         # create home dir
         file { "$home":
             ensure  => directory,
-            mode    => $mode,
             owner   => $name,
             group   => $name,
             require => User["$name"],
