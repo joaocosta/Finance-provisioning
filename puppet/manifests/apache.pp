@@ -8,11 +8,17 @@ file { "/etc/localtime":
     target  => "/usr/share/zoneinfo/UTC",
 }
 
-/*
-apache::vhost { 'www,fxhistoricaldata.com':
-    priority        => '10',
-    docroot         => '/home/fxhistor/fxhistoricaldata.com/web',
-    port            => '80',
-    serveraliases   => ['fxhistoricaldata.com'],
+file { "/home/joao/sites/wordscheater.com/web":
+    ensure      => directory,
+    recursive   => true,
+    mode        => 0755,
+    require     => User["joao"],
 }
-*/
+
+apache::vhost { 'www.wordscheater.com':
+    priority        => '10',
+    docroot         => '/home/joao/sites/wordscheater.com/web',
+    port            => '80',
+    serveraliases   => ['wordscheater.com'],
+    require         => File["/home/joao/sites/wordscheater.com/web"],
+}
