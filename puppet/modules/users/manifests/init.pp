@@ -25,7 +25,6 @@ class users {
                 "set spec[user = '${name}']/host_group/command/runas_user ALL",
                 "set spec[user = '${name}']/host_group/command/tag NOPASSWD",
             ],
-            require => Package["libaugeas-ruby"],
         }
     }
 
