@@ -3,6 +3,11 @@ include users
 
 realize Users::Mkuser["joao"]
 
+file { "/etc/localtime":
+    ensure  => link,
+    target  => "/usr/share/zoneinfo/UTC",
+}
+
 /*
 apache::vhost { 'www,fxhistoricaldata.com':
     priority        => '10',
