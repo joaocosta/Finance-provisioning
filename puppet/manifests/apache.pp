@@ -43,7 +43,8 @@ file { "/home/joao/sites/wordscheater.com/cgi-bin":
 apache::vhost { 'www.wordscheater.com':
     priority        => '10',
     docroot         => '/home/joao/sites/wordscheater.com/web',
+    scriptroot      => '/home/joao/sites/wordscheater.com/cgi-bin',
     port            => '80',
     serveraliases   => ['wordscheater.com'],
-    require         => File["/home/joao/sites/wordscheater.com/web"],
+    require         => [ File["/home/joao/sites/wordscheater.com/web"],File["/home/joao/sites/wordscheater.com/cgi-bin"] ],
 }
