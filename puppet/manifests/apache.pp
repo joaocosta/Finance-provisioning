@@ -8,11 +8,22 @@ file { "/etc/localtime":
     target  => "/usr/share/zoneinfo/UTC",
 }
 
-file { "/home/joao/sites/wordscheater.com/web":
+file { "/home/joao/sites":
     ensure      => directory,
-    recursive   => true,
     mode        => 0755,
     require     => User["joao"],
+}
+
+file { "/home/joao/sites/wordscheater.com":
+    ensure      => directory,
+    mode        => 0755,
+    require     => File["/home/joao/sites"],
+}
+
+file { "/home/joao/sites/wordscheater.com/web":
+    ensure      => directory,
+    mode        => 0755,
+    require     => File["/home/joao/sites/wordscheater.com"],
 }
 
 apache::vhost { 'www.wordscheater.com':
