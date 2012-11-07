@@ -32,6 +32,14 @@ file { "/home/joao/sites/wordscheater.com/web":
     require     => File["/home/joao/sites/wordscheater.com"],
 }
 
+file { "/home/joao/sites/wordscheater.com/cgi-bin":
+    ensure      => directory,
+    owner       => "joao",
+    group       => "joao",
+    mode        => 0755,
+    require     => File["/home/joao/sites/wordscheater.com"],
+}
+
 apache::vhost { 'www.wordscheater.com':
     priority        => '10',
     docroot         => '/home/joao/sites/wordscheater.com/web',
