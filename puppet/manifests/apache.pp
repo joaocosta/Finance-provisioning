@@ -3,6 +3,10 @@ include users
 
 realize Users::Mkuser["joao"]
 
+package { ['mysql-server', 'mysql']:
+    ensure  => latest,
+}
+
 file { "/etc/localtime":
     ensure  => link,
     target  => "/usr/share/zoneinfo/UTC",
