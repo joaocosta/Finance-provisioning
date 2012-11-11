@@ -85,4 +85,17 @@ apache::vhost { 'www.zonalivre.org':
     require         => [ File["/home/joao/sites/wordscheater.com/web"] ],
 }
 
+file { "/home/joao/rpmbuild":
+    ensure      => directory,
+    owner       => "joao",
+    group       => "joao",
+    mode        => 0755,
+    require     => User["joao"],
+}
 
+apache::vhost { 'packages.zonalivre.org':
+    priority        => '10',
+    docroot         => '/home/joao/rpmbuild',
+    port            => '80',
+    require         => [ File["/home/joao/rpmbuild"] ],
+}
