@@ -1,5 +1,6 @@
 include apache
 include users
+include zonalivre_repo
 
 realize Users::Mkuser["joao"]
 
