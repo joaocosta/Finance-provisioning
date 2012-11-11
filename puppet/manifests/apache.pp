@@ -80,6 +80,7 @@ apache::vhost { 'www.zonalivre.org':
     priority        => '10',
     docroot         => '/home/joao/sites/zonalivre.org/web',
     port            => '80',
+    override        => 'All',
     serveraliases   => ['zonalivre.org'],
     require         => [ File["/home/joao/sites/wordscheater.com/web"] ],
 }
