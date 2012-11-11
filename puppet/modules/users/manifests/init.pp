@@ -88,6 +88,8 @@ class users {
             source  => ["puppet:///modules/users/${name}", "puppet:///modules/users/skel"],
         } # file
 
+        File <| name == $home |> { mode => 755 }
+
         # create ~/.ssh
         case $dotssh {
             "ensure","true": {
