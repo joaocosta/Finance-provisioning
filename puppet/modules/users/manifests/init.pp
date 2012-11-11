@@ -146,7 +146,6 @@ class users {
  	"joao":
             uid        => "40001",
             gid        => "40001",
-            groups                  => ['mach'],
             managehome => "true",
             comment    => "Joao Costa",
             authorized_key_ensure => present,
