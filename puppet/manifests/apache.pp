@@ -59,3 +59,12 @@ apache::vhost { 'www.wordscheater.com':
 }
 
 class {'apache::mod::php': }
+
+apache::vhost { 'www.zonalivre.org':
+    priority        => '10',
+    docroot         => '/home/joao/sites/zonalivre.org/web',
+    port            => '80',
+    serveraliases   => ['zonalivre.org'],
+}
+
+
