@@ -4,12 +4,12 @@ config['files'] = {
 127.0.0.1 builder.zonalivre.org builder localhost
 ''',
   '/etc/resolv.conf': '''
-nameserver 1.1.1.1
-nameserver 2.2.2.2
+nameserver 8.8.8.8
+nameserver 8.8.4.4
 search zonalivre.org
 '''
 }
-config['defaultroot'] = 'fedora-16-x86_64'
+config['defaultroot'] = 'fedora-16-x86_64-updates'
 config['macros'] = {
     'vendor':   'Zonalivre',
 }
