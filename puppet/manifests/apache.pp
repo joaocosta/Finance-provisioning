@@ -60,11 +60,28 @@ apache::vhost { 'www.wordscheater.com':
 
 class {'apache::mod::php': }
 
+file { "/home/joao/sites/zonalivre.org":
+    ensure      => directory,
+    owner       => "joao",
+    group       => "joao",
+    mode        => 0755,
+    require     => File["/home/joao/sites"],
+}
+
+file { "/home/joao/sites/zonalivre.org/web":
+    ensure      => directory,
+    owner       => "joao",
+    group       => "joao",
+    mode        => 0755,
+    require     => File["/home/joao/sites/zonalivre.org"],
+}
+
 apache::vhost { 'www.zonalivre.org':
     priority        => '10',
     docroot         => '/home/joao/sites/zonalivre.org/web',
     port            => '80',
     serveraliases   => ['zonalivre.org'],
+    require         => [ File["/home/joao/sites/wordscheater.com/web"] ],
 }
 
 
