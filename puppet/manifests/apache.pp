@@ -50,6 +50,10 @@ file { "/home/joao/sites/wordscheater.com/cgi-bin":
     require     => File["/home/joao/sites/wordscheater.com"],
 }
 
+package { ['perl-CGI', 'perl-JSON', 'perl-Games-Word']:
+    ensure  => latest,
+}
+
 apache::vhost { 'www.wordscheater.com':
     priority        => '10',
     docroot         => '/home/joao/sites/wordscheater.com/web',
