@@ -3,7 +3,7 @@ include users
 
 realize Users::Mkuser["joao"]
 
-package { ['mysql-server', 'mysql']:
+package { ['mysql-server', 'mysql', 'php-mysql']:
     ensure  => latest,
 }
 
