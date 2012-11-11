@@ -7,6 +7,11 @@ package { ['mysql-server', 'mysql']:
     ensure  => latest,
 }
 
+service { 'mysqld':
+    ensure  => running,
+    require => Package['mysql-server'],
+}
+
 file { "/etc/localtime":
     ensure  => link,
     target  => "/usr/share/zoneinfo/UTC",
@@ -52,3 +57,5 @@ apache::vhost { 'www.wordscheater.com':
     serveraliases   => ['wordscheater.com'],
     require         => [ File["/home/joao/sites/wordscheater.com/web"],File["/home/joao/sites/wordscheater.com/cgi-bin"] ],
 }
+
+class {'apache::mod::php': }
