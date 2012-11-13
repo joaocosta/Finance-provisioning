@@ -17,6 +17,10 @@ class buildbox {
         ensure      => latest,
     }
 
+    package { $buildbox::params::perl_build:
+        ensure      => latest,
+    }
+
     include users
     realize Users::Mkuser["joao"]
 
