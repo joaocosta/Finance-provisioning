@@ -2,8 +2,3 @@
 name=Zonalivre
 baseurl=http://packages.zonalivre.org/RPMS/noarch/
 gpgcheck=0
-
-[zonalivre64]
-name=Zonalivre64
-baseurl=http://packages.zonalivre.org/RPMS/x86_64/
-gpgcheck=0
