@@ -104,3 +104,32 @@ apache::vhost { 'packages.zonalivre.org':
     port            => '80',
     require         => [ File["/home/joao/rpmbuild"] ],
 }
+
+package { ['perl-Finance-FXCM-Simple']:
+    ensure  => latest,
+}
+
+file { "/home/joao/sites/fxhistoricaldata.com":
+    ensure      => directory,
+    owner       => "joao",
+    group       => "joao",
+    mode        => 0755,
+    require     => File["/home/joao/sites"],
+}
+
+file { "/home/joao/sites/fxhistoricaldata.com/web":
+    ensure      => directory,
+    owner       => "joao",
+    group       => "joao",
+    mode        => 0755,
+    require     => File["/home/joao/sites/fxhistoricaldata.com"],
+}
+
+apache::vhost { 'www.fxhistoricaldata.com':
+    priority        => '10',
+    docroot         => '/home/joao/sites/fxhistoricaldata.com/web',
+    port            => '80',
+    serveraliases   => ['fxhistoricaldata.com'],
+    require         => [ File["/home/joao/rpmbuild"] ],
+}
+
