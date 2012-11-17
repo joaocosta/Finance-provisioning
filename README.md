@@ -8,6 +8,7 @@ To clone source tree
 
 To add a new submodule
     git submodule add <URL> PATH
+    eg: git submodule add git://github.com/puppetlabs/puppetlabs-mysql.git puppet/modules/mysql
 
 To remove a submodule
     http://stackoverflow.com/questions/1260748/how-do-i-remove-a-git-submodule
