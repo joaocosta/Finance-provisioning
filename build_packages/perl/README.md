@@ -9,6 +9,7 @@ If new/updated cpan distributions need to be built, the following stages apply:
 
   - Create specfile for newly download distribution
   - If this is an updated version of a previously built distribution, diff/merge the existing spec file
+    - vimdiff quick reference: http://amjith.blogspot.co.uk/2008/08/quick-and-dirty-vimdiff-tutorial.html
   - Review the specfile (eg: Dependencies, Descriptions, etc ...)
   - Run mach to build the rpm. Address any errors that may occur.
   - If there are no errors and rpm was built, commit spec file.
