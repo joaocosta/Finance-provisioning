@@ -1,16 +1,11 @@
 include apache
+include mysql
 include users
 include zonalivre_repo
 
 realize Users::Mkuser["joao"]
 
-package { ['mysql-server', 'mysql', 'php-mysql']:
-    ensure  => latest,
-}
-
-service { 'mysqld':
-    ensure  => running,
-    require => Package['mysql-server'],
+class { 'mysql::server':
 }
 
 file { "/etc/localtime":
@@ -133,3 +128,9 @@ apache::vhost { 'www.fxhistoricaldata.com':
     require         => [ File["/home/joao/rpmbuild"] ],
 }
 
+mysql::db { 'fxcm':
+    user     => 'fxcm',
+    password => '',
+    host     => 'localhost',
+    grant    => ['all'],
+}
