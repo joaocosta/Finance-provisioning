@@ -15,3 +15,4 @@ If new/updated cpan distributions need to be built, the following stages apply:
   - If there are no errors and rpm was built, commit spec file.
   - Move the built packages from /var/tmp/mach to /home/joao/rpmbuild/RPMS/noarch
   - Recreate the repo at /home/joao/rpmbuild/RPMS/noarch
+  - Remove distributions downloaded from cpan (to keep git status clean)

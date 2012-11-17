@@ -48,5 +48,6 @@ foreach(@specfiles) {
 }
 
 print "mach build " . join(" ", @specfiles), "\n";
-print 'find /var/tmp/mach/fedora-16-x86_64-updates -name "*rpm" -exec mv {} '.$search_dir.' \;' . "\n";
+print 'find /var/tmp/mach/fedora-16-x86_64-updates -name "*rpm" -exec mv -v {} '.$search_dir.' \;' . "\n";
 print "createrepo $search_dir\n";
+print "rm -v " . join(" ", @cpansourcefiles);
