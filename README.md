@@ -12,3 +12,6 @@ To add a new submodule
 
 To remove a submodule
     http://stackoverflow.com/questions/1260748/how-do-i-remove-a-git-submodule
+
+To debug puppet runs:
+    puppet apply --summarize --evaltrace --modulepath=puppet/modules manifests/somemanifest.pp
