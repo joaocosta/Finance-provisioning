@@ -138,3 +138,10 @@ mysql::db { 'fxcm':
     host     => 'localhost',
     grant    => ['all'],
 }
+
+mysql::db { 'fx':
+    user     => 'fxhistor',
+    password => '',
+    host     => 'localhost',
+    grant    => ['all'],
+}
