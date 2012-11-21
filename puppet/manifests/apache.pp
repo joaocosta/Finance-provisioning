@@ -120,7 +120,7 @@ file { "/home/joao/sites/fxhistoricaldata.com/web":
     require     => File["/home/joao/sites/fxhistoricaldata.com"],
 }
 
-package { ['perl-Catalyst-Runtime']:
+package { ['perl-Finance-HostedTrader', 'perl-Catalyst-Runtime']:
     ensure      => latest,
 }
 
