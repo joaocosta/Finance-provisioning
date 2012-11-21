@@ -120,6 +120,10 @@ file { "/home/joao/sites/fxhistoricaldata.com/web":
     require     => File["/home/joao/sites/fxhistoricaldata.com"],
 }
 
+package { ['perl-Catalyst-Runtime']:
+    ensure      => latest,
+}
+
 apache::vhost { 'www.fxhistoricaldata.com':
     priority        => '10',
     docroot         => '/home/joao/sites/fxhistoricaldata.com/web',
