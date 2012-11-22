@@ -145,3 +145,10 @@ mysql::db { 'fx':
     host     => 'localhost',
     grant    => ['all'],
 }
+
+file { "/etc/fx.yml":
+    source  => 'puppet:///modules/fx/fx.yml',
+    owner   => root,
+    group   => root,
+    mode    => '0644'
+}
