@@ -1,0 +1,14 @@
+MAILTO=joaocosta@zonalivre.org
+
+*/5 21-23 * * 0 joao $TRADER_HOME/data/fxcm/servers/FXLoadHistoricalData/loaddata.sh -t m5 -n 10 2>&1
+*/5 * * * 1-4 joao $TRADER_HOME/data/fxcm/servers/FXLoadHistoricalData/loaddata.sh -t m5 -n 10 2>&1
+*/5 0-20 * * 5 joao $TRADER_HOME/data/fxcm/servers/FXLoadHistoricalData/loaddata.sh -t m5 -n 10 2>&1
+3,18,38 * * * 0-5 joao $TRADER_HOME/data/fxcm/servers/FXLoadHistoricalData/loaddata.sh -t H1 -n 10 2>&1
+6 */3 * * 0-5 joao $TRADER_HOME/data/fxcm/servers/FXLoadHistoricalData/loaddata.sh -t D1 -n 10 2>&1
+31 6 * * 1 joao $TRADER_HOME/data/fxcm/servers/FXLoadHistoricalData/loaddata.sh -t W1 -n 320 -d "0001-01-01" 2>&1
+
+
+#Check errors in fxcm data import once a day
+2 7 * * * joao cat /tmp/mysqlimport.errors 2> /dev/null
+
+37 */3 * * 1-4 joao dataUp2Date.pl
