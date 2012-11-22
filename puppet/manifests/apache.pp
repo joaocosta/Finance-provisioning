@@ -139,9 +139,17 @@ mysql::db { 'fxcm':
     grant    => ['all'],
 }
 
+database_grant { 'fxcm@localhost/fxcm':
+    privileges  => ['all'],
+}
+
 mysql::db { 'fx':
     user     => 'fxhistor',
     password => '',
     host     => 'localhost',
     grant    => ['all'],
+}
+
+database_grant { 'fxhistor@localhost/fx':
+    privileges  => ['all'],
 }
