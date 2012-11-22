@@ -134,22 +134,14 @@ apache::vhost { 'www.fxhistoricaldata.com':
 
 mysql::db { 'fxcm':
     user     => 'fxcm',
-    password => '',
+    password => 'fxcm',
     host     => 'localhost',
     grant    => ['all'],
-}
-
-database_grant { 'fxcm@localhost/fxcm':
-    privileges  => ['all'],
 }
 
 mysql::db { 'fx':
     user     => 'fxhistor',
-    password => '',
+    password => 'fxhistor',
     host     => 'localhost',
     grant    => ['all'],
-}
-
-database_grant { 'fxhistor@localhost/fx':
-    privileges  => ['all'],
 }
