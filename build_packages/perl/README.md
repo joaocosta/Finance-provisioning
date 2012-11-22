@@ -16,3 +16,8 @@ If new/updated cpan distributions need to be built, the following stages apply:
   - Move the built packages from /var/tmp/mach to /home/joao/rpmbuild/RPMS/noarch
   - Recreate the repo at /home/joao/rpmbuild/RPMS/noarch
   - Remove distributions downloaded from cpan (to keep git status clean)
+
+To build a package manually:
+  - mach build $SPECFILE
+  - find /var/tmp/mach/fedora-16-x86_64-updates -name "*rpm" -exec mv -v {} ~/rpmbuild/RPMS/noarch \;
+  - createrepo ~/rpmbuild/RPMS/noarch
