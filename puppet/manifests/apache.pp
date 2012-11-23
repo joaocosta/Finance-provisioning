@@ -147,7 +147,7 @@ mysql::db { 'fx':
 }
 
 file { "/etc/fx.yml":
-    source  => 'puppet:///modules/fx/fx.yml',
+    source  => 'puppet:///modules/fx/etc/fx.yml',
     owner   => root,
     group   => root,
     mode    => '0644'

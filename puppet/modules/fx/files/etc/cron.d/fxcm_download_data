@@ -1,4 +1,5 @@
 MAILTO=joaocosta@zonalivre.org
+TRADER_HOME=/home/joao/src/Finance--HostedTrader
 
 */5 21-23 * * 0 joao $TRADER_HOME/data/fxcm/servers/FXLoadHistoricalData/loaddata.sh -t m5 -n 10 2>&1
 */5 * * * 1-4 joao $TRADER_HOME/data/fxcm/servers/FXLoadHistoricalData/loaddata.sh -t m5 -n 10 2>&1
