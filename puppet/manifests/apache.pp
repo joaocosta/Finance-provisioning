@@ -140,11 +140,14 @@ exec { 'setup libmysqludf_ta':
     require => Package['libmysqludf_ta'],
 }
 
+class {'apache::mod::perl': }
+
 apache::vhost { 'www.fxhistoricaldata.com':
     priority        => '10',
     docroot         => '/home/joao/sites/fxhistoricaldata.com/web',
     scriptroot      => '/home/joao/sites/fxhistoricaldata.com/cgi-bin/',
     port            => '80',
+    override        => 'All',
     serveraliases   => ['fxhistoricaldata.com'],
     require         => [ File["/home/joao/rpmbuild"] ],
 }
