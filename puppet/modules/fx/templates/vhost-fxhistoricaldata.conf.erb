@@ -1,0 +1,41 @@
+# ************************************
+# fxhistoricaldata.com template in module fx
+# Managed by Puppet
+# ************************************
+
+NameVirtualHost <%= vhost_name %>:<%= port %>
+PerlSwitches -I/home/joao/sites/fxhistoricaldata.com/Finance-HostedTrader-UI/lib
+<VirtualHost <%= vhost_name %>:<%= port %>>
+  ServerName <%= srvname %>
+<% if serveradmin %>
+  ServerAdmin <%= serveradmin %>
+<% end %>
+<% if serveraliases.is_a? Array -%>
+<% serveraliases.each do |name| -%><%= "  ServerAlias #{name}\n" %><% end -%>
+<% elsif serveraliases != '' -%>
+<%= "  ServerAlias #{serveraliases}" %>
+<% end -%>
+  <% if scriptroot %>
+  ScriptAlias <%= scriptvdir %> <%= scriptroot %>
+  <% end %>
+
+  <Location />
+    SetHandler          modperl
+    PerlResponseHandler Finance::HostedTrader::UI
+  </Location>
+
+  Alias /yui /home/joao/sites/fxhistoricaldata.com/Finance-HostedTrader-UI/root/yui
+  <Directory /home/joao/sites/fxhistoricaldata.com/Finance-HostedTrader-UI/root/yui>
+    Order allow,deny
+    Allow from all
+  </Directory>
+
+  Alias /s1 /home/joao/sites/fxhistoricaldata.com/Finance-HostedTrader-UI/root/s1
+  PerlModule Finance::HostedTrader::UI
+
+  ErrorLog <%= logroot %>/<%= name %>_error.log
+  LogLevel warn
+  CustomLog <%= logroot %>/<%= name %>_access.log combined
+  ServerSignature Off
+</VirtualHost>
+

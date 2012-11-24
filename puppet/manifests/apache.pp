@@ -130,7 +130,7 @@ file { "/home/joao/sites/fxhistoricaldata.com/web":
     require     => File["/home/joao/sites/fxhistoricaldata.com"],
 }
 
-package { ['perl-Finance-HostedTrader', 'perl-Catalyst-Runtime', 'libmysqludf_ta']:
+package { ['perl-Finance-HostedTrader', 'perl-Catalyst-Runtime', 'perl-Catalyst-Plugin-Static-Simple', 'perl-Catalyst-Plugin-ConfigLoader', 'perl-Catalyst-View-TT', 'perl-Catalyst-Model-DBIC-Schema', 'perl-Catalyst-Action-RenderView', 'libmysqludf_ta']:
     ensure      => latest,
 }
 
@@ -149,7 +149,8 @@ apache::vhost { 'www.fxhistoricaldata.com':
     port            => '80',
     override        => 'All',
     serveraliases   => ['fxhistoricaldata.com'],
-    require         => [ File["/home/joao/rpmbuild"] ],
+    template        => 'fx/vhost-fxhistoricaldata.conf.erb',
+    require         => [ File["/home/joao/sites/fxhistoricaldata.com/web"], File["/home/joao/sites/fxhistoricaldata.com/cgi-bin"] ],
 }
 
 mysql::db { 'fxcm':
