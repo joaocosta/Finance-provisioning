@@ -106,31 +106,7 @@ package { ['perl-Finance-FXCM-Simple']:
     ensure  => latest,
 }
 
-file { "/home/joao/sites/fxhistoricaldata.com":
-    ensure      => directory,
-    owner       => "joao",
-    group       => "joao",
-    mode        => 0755,
-    require     => File["/home/joao/sites"],
-}
-
-file { "/home/joao/sites/fxhistoricaldata.com/cgi-bin":
-    ensure      => directory,
-    owner       => "joao",
-    group       => "joao",
-    mode        => 0755,
-    require     => File["/home/joao/sites/fxhistoricaldata.com"],
-}
-
-file { "/home/joao/sites/fxhistoricaldata.com/web":
-    ensure      => directory,
-    owner       => "joao",
-    group       => "joao",
-    mode        => 0755,
-    require     => File["/home/joao/sites/fxhistoricaldata.com"],
-}
-
-package { ['perl-Finance-HostedTrader', 'perl-Catalyst-Runtime', 'perl-Catalyst-Plugin-Static-Simple', 'perl-Catalyst-Plugin-ConfigLoader', 'perl-Catalyst-View-TT', 'perl-Catalyst-Model-DBIC-Schema', 'perl-Catalyst-Action-RenderView', 'libmysqludf_ta']:
+package { ['perl-Finance-HostedTrader', 'perl-Finance-HostedTrader-UI', 'libmysqludf_ta']:
     ensure      => latest,
 }
 
@@ -142,15 +118,21 @@ exec { 'setup libmysqludf_ta':
 
 class {'apache::mod::perl': }
 
+file { '/home/joao/download':
+    ensure  => directory,
+    owner   => 'joao',
+    group   => 'joao',
+    mode    => '0755',
+}
+
 apache::vhost { 'www.fxhistoricaldata.com':
     priority        => '10',
-    docroot         => '/home/joao/sites/fxhistoricaldata.com/web',
-    scriptroot      => '/home/joao/sites/fxhistoricaldata.com/cgi-bin/',
+    docroot         => '/none', # docroot isn't actually used in the custom template, but the puppet module requires a docroot parameter
     port            => '80',
     override        => 'All',
     serveraliases   => ['fxhistoricaldata.com'],
     template        => 'fx/vhost-fxhistoricaldata.conf.erb',
-    require         => [ File["/home/joao/sites/fxhistoricaldata.com/web"], File["/home/joao/sites/fxhistoricaldata.com/cgi-bin"] ],
+    require         => [ Package['perl-Finance-HostedTrader-UI'], ],
 }
 
 mysql::db { 'fxcm':
