@@ -1,6 +1,6 @@
 Name:           perl-Finance-HostedTrader
-Version:        0.009
-Release:        2%{?dist}
+Version:        0.010
+Release:        1%{?dist}
 Summary:        Finance::HostedTrader Perl module
 License:        MIT
 Group:          Development/Libraries
@@ -98,6 +98,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sat Nov 24 2012 João Costa <joaocosta@zonalivre.org> 0.010-1
+- New upstream version available
+
 * Fri Nov 23 2012 João Costa <joaocosta@zonalivre.org> 0.009-2
 - Add dependency on libmysqludf_ta
 
