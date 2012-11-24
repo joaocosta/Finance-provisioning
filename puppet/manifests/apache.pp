@@ -106,8 +106,13 @@ package { ['perl-Finance-FXCM-Simple']:
     ensure  => latest,
 }
 
-package { ['perl-Finance-HostedTrader', 'perl-Finance-HostedTrader-UI', 'libmysqludf_ta']:
+package { ['perl-Finance-HostedTrader', 'libmysqludf_ta']:
     ensure      => latest,
+}
+
+package { 'perl-Finance-HostedTrader-UI':
+    ensure      => latest,
+    notify      => Service['httpd'],
 }
 
 exec { 'setup libmysqludf_ta':
