@@ -5,6 +5,8 @@ include zonalivre_repo
 
 realize Users::Mkuser["joao"]
 
+Exec { path => [ '/usr/bin' ] }
+
 class { 'mysql::server':
 }
 
@@ -128,8 +130,14 @@ file { "/home/joao/sites/fxhistoricaldata.com/web":
     require     => File["/home/joao/sites/fxhistoricaldata.com"],
 }
 
-package { ['perl-Finance-HostedTrader', 'perl-Catalyst-Runtime']:
+package { ['perl-Finance-HostedTrader', 'perl-Catalyst-Runtime', 'libmysqludf_ta']:
     ensure      => latest,
+}
+
+exec { 'setup libmysqludf_ta':
+    command => 'mysql -uroot < /usr/share/libmysqludf_ta/db_install_lib_mysqludf_ta',
+    unless  => "mysql -uroot -e 'SELECT ta_ema(A,1) FROM (select 1.0 AS A) AS T'",
+    require => Package['libmysqludf_ta'],
 }
 
 apache::vhost { 'www.fxhistoricaldata.com':
