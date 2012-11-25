@@ -95,7 +95,7 @@ apache::vhost { 'www.fxhistoricaldata.com':
     port            => '80',
     override        => 'All',
     serveraliases   => ['fxhistoricaldata.com'],
-    template        => 'fx/vhost-fxhistoricaldata.conf.erb',
+    template        => 'fxtrader/vhost-fxhistoricaldata.conf.erb',
     require         => [ Package['perl-Finance-HostedTrader-UI'], Class['apache::mod::perl'] ],
 }
 
@@ -116,21 +116,21 @@ mysql::db { 'fx':
 }
 
 file { "/etc/fx.yml":
-    source  => 'puppet:///modules/fx/etc/fx.yml',
+    source  => 'puppet:///modules/fxtrader/etc/fx.yml',
     owner   => root,
     group   => root,
     mode    => '0644'
 }
 
 file { "/etc/cron.d/forexite_download_data":
-    source  => 'puppet:///modules/fx/etc/cron.d/forexite_download_data',
+    source  => 'puppet:///modules/fxtrader/etc/cron.d/forexite_download_data',
     owner   => root,
     group   => root,
     mode    => '0644'
 }
 
 file { "/etc/cron.d/fxcm_download_data":
-    source  => 'puppet:///modules/fx/etc/cron.d/fxcm_download_data',
+    source  => 'puppet:///modules/fxtrader/etc/cron.d/fxcm_download_data',
     owner   => root,
     group   => root,
     mode    => '0644'
