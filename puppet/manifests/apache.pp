@@ -1,7 +1,7 @@
 include apache
 include mysql
 include users
-include zonalivre_repo
+include packages
 
 realize Users::Mkuser["joao"]
 
@@ -15,90 +15,26 @@ file { "/etc/localtime":
     target  => "/usr/share/zoneinfo/UTC",
 }
 
-package { 'selinux-policy-targeted':
-    ensure  => absent,
-}
-
-package { 'selinux-policy':
-    ensure  => absent,
-    require => Package['selinux-policy-targeted'],
-}
-
-file { "/home/joao/sites":
+file { '/home/joao/sites':
     ensure      => directory,
-    owner       => "joao",
-    group       => "joao",
+    owner       => 'joao',
+    group       => 'joao',
     mode        => 0755,
-    require     => User["joao"],
+    require     => User['joao'],
 }
 
-file { "/home/joao/sites/wordscheater.com":
-    ensure      => directory,
-    owner       => "joao",
-    group       => "joao",
-    mode        => 0755,
-    require     => File["/home/joao/sites"],
+class {'site::wordscheater':
+    base_path   => '/home/joao/sites',
+    user        => 'joao',
+    group       => 'joao',
+    require     => File['/home/joao/sites'],
 }
 
-file { "/home/joao/sites/wordscheater.com/web":
-    ensure      => directory,
-    owner       => "joao",
-    group       => "joao",
-    mode        => 0755,
-    require     => File["/home/joao/sites/wordscheater.com"],
-}
-
-file { "/home/joao/sites/wordscheater.com/cgi-bin":
-    ensure      => directory,
-    owner       => "joao",
-    group       => "joao",
-    mode        => 0755,
-    require     => File["/home/joao/sites/wordscheater.com"],
-}
-
-package { ['perl-CGI', 'perl-JSON',]:
-    ensure  => latest,
-}
-
-package { 'perl-Games-Word':
-    ensure  => latest,
-    require => Class['zonalivre_repo'],
-}
-
-apache::vhost { 'www.wordscheater.com':
-    priority        => '10',
-    docroot         => '/home/joao/sites/wordscheater.com/web',
-    scriptroot      => '/home/joao/sites/wordscheater.com/cgi-bin/',
-    port            => '80',
-    serveraliases   => ['wordscheater.com'],
-    require         => [ File["/home/joao/sites/wordscheater.com/web"],File["/home/joao/sites/wordscheater.com/cgi-bin"] ],
-}
-
-class {'apache::mod::php': }
-
-file { "/home/joao/sites/zonalivre.org":
-    ensure      => directory,
-    owner       => "joao",
-    group       => "joao",
-    mode        => 0755,
-    require     => File["/home/joao/sites"],
-}
-
-file { "/home/joao/sites/zonalivre.org/web":
-    ensure      => directory,
-    owner       => "joao",
-    group       => "joao",
-    mode        => 0755,
-    require     => File["/home/joao/sites/zonalivre.org"],
-}
-
-apache::vhost { 'www.zonalivre.org':
-    priority        => '10',
-    docroot         => '/home/joao/sites/zonalivre.org/web',
-    port            => '80',
-    override        => 'All',
-    serveraliases   => ['zonalivre.org'],
-    require         => [ File["/home/joao/sites/wordscheater.com/web"] ],
+class {'site::zonalivre':
+    base_path   => '/home/joao/sites',
+    user        => 'joao',
+    group       => 'joao',
+    require     => File['/home/joao/sites'],
 }
 
 file { "/home/joao/rpmbuild":
