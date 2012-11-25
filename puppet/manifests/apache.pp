@@ -185,6 +185,13 @@ file { "/etc/fx.yml":
     mode    => '0644'
 }
 
+file { "/etc/cron.d/forexite_download_data":
+    source  => 'puppet:///modules/fx/etc/cron.d/forexite_download_data',
+    owner   => root,
+    group   => root,
+    mode    => '0644'
+}
+
 file { "/etc/cron.d/fxcm_download_data":
     source  => 'puppet:///modules/fx/etc/cron.d/fxcm_download_data',
     owner   => root,

@@ -1,0 +1,4 @@
+MAILTO=joaocosta@zonalivre.org
+TRADER_HOME=/home/joao/src/Finance--HostedTrader
+
+8 7 * * * joao $TRADER_HOME/data/forexite/update 60
