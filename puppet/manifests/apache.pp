@@ -15,6 +15,15 @@ file { "/etc/localtime":
     target  => "/usr/share/zoneinfo/UTC",
 }
 
+package { 'selinux-policy-targeted':
+    ensure  => absent,
+}
+
+package { 'selinux-policy':
+    ensure  => absent,
+    require => Package['selinux-policy-targeted'],
+}
+
 file { "/home/joao/sites":
     ensure      => directory,
     owner       => "joao",
@@ -47,8 +56,13 @@ file { "/home/joao/sites/wordscheater.com/cgi-bin":
     require     => File["/home/joao/sites/wordscheater.com"],
 }
 
-package { ['perl-CGI', 'perl-JSON', 'perl-Games-Word']:
+package { ['perl-CGI', 'perl-JSON',]:
     ensure  => latest,
+}
+
+package { 'perl-Games-Word':
+    ensure  => latest,
+    require => Class['zonalivre_repo'],
 }
 
 apache::vhost { 'www.wordscheater.com':
@@ -104,21 +118,29 @@ apache::vhost { 'packages.zonalivre.org':
 
 package { ['perl-Finance-FXCM-Simple']:
     ensure  => latest,
+    require => Class['zonalivre_repo'],
 }
 
-package { ['perl-Finance-HostedTrader', 'libmysqludf_ta']:
-    ensure      => latest,
+package { 'perl-Finance-HostedTrader':
+    ensure  => latest,
+    require => [ Class['zonalivre_repo'], File['/etc/fx.yml'] ],
+}
+
+package { 'libmysqludf_ta':
+    ensure  => latest,
+    require => [ Class['zonalivre_repo'], ],
 }
 
 package { 'perl-Finance-HostedTrader-UI':
-    ensure      => latest,
-    notify      => Service['httpd'],
+    ensure  => latest,
+    require => Class['zonalivre_repo'],
+    notify  => Service['httpd'],
 }
 
 exec { 'setup libmysqludf_ta':
     command => 'mysql -uroot < /usr/share/libmysqludf_ta/db_install_lib_mysqludf_ta',
     unless  => "mysql -uroot -e 'SELECT ta_ema(A,1) FROM (select 1.0 AS A) AS T'",
-    require => Package['libmysqludf_ta'],
+    require => [ Package['libmysqludf_ta'], Class['mysql::server'], Class['mysql'] ],
 }
 
 class {'apache::mod::perl': }
@@ -137,7 +159,7 @@ apache::vhost { 'www.fxhistoricaldata.com':
     override        => 'All',
     serveraliases   => ['fxhistoricaldata.com'],
     template        => 'fx/vhost-fxhistoricaldata.conf.erb',
-    require         => [ Package['perl-Finance-HostedTrader-UI'], ],
+    require         => [ Package['perl-Finance-HostedTrader-UI'], Class['apache::mod::perl'] ],
 }
 
 mysql::db { 'fxcm':
@@ -145,6 +167,7 @@ mysql::db { 'fxcm':
     password => 'fxcm',
     host     => 'localhost',
     grant    => ['all'],
+    require  => File['/root/.my.cnf'],
 }
 
 mysql::db { 'fx':
@@ -152,6 +175,7 @@ mysql::db { 'fx':
     password => 'fxhistor',
     host     => 'localhost',
     grant    => ['all'],
+    require  => File['/root/.my.cnf'],
 }
 
 file { "/etc/fx.yml":
