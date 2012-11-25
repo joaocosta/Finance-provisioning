@@ -1,11 +1,19 @@
 include apache
 include mysql
 include users
-include packages
 
 realize Users::Mkuser["joao"]
 
 Exec { path => [ '/usr/bin' ] }
+
+package { 'selinux-policy-targeted':
+    ensure  => absent,
+}
+
+package { 'selinux-policy':
+    ensure  => absent,
+    require => Package['selinux-policy-targeted'],
+}
 
 class { 'mysql::server':
 }
@@ -27,7 +35,7 @@ class {'site::wordscheater':
     base_path   => '/home/joao/sites',
     user        => 'joao',
     group       => 'joao',
-    require     => File['/home/joao/sites'],
+    require     => [ File['/home/joao/sites'], Class['zonalivre_repo::client'] ],
 }
 
 class {'site::zonalivre':
@@ -37,39 +45,32 @@ class {'site::zonalivre':
     require     => File['/home/joao/sites'],
 }
 
-file { "/home/joao/rpmbuild":
-    ensure      => directory,
-    owner       => "joao",
-    group       => "joao",
-    mode        => 0755,
-    require     => User["joao"],
+class {'zonalivre_repo':
+    base_path   => '/home/joao/rpmbuild',
+    user        => 'joao',
+    group       => 'joao',
 }
 
-apache::vhost { 'packages.zonalivre.org':
-    priority        => '10',
-    docroot         => '/home/joao/rpmbuild',
-    port            => '80',
-    require         => [ File["/home/joao/rpmbuild"] ],
-}
+class {'zonalivre_repo::client':}
 
 package { ['perl-Finance-FXCM-Simple']:
     ensure  => latest,
-    require => Class['zonalivre_repo'],
+    require => Class['zonalivre_repo::client'],
 }
 
 package { 'perl-Finance-HostedTrader':
     ensure  => latest,
-    require => [ Class['zonalivre_repo'], File['/etc/fx.yml'] ],
+    require => [ Class['zonalivre_repo::client'], File['/etc/fx.yml'] ],
 }
 
 package { 'libmysqludf_ta':
     ensure  => latest,
-    require => [ Class['zonalivre_repo'], ],
+    require => [ Class['zonalivre_repo::client'], ],
 }
 
 package { 'perl-Finance-HostedTrader-UI':
     ensure  => latest,
-    require => Class['zonalivre_repo'],
+    require => Class['zonalivre_repo::client'],
     notify  => Service['httpd'],
 }
 

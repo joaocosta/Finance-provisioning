@@ -11,7 +11,7 @@
 # 
 #
 # [Remember: No empty lines between comments and class definition]
-class zonalivre_repo {
+class zonalivre_repo::client {
 
     file { '/etc/yum.repos.d/zonalivre.repo':
         ensure  => present,
@@ -20,4 +20,4 @@ class zonalivre_repo {
         mode    => 644,
         source  => 'puppet:///modules/zonalivre_repo/zonalivre.repo',
     }
-} # class zonalivre_repo
+} # class zonalivre_repo::client

@@ -6,6 +6,14 @@ class site::wordscheater (
 
 include apache
 
+package { ['perl-CGI', 'perl-JSON',]:
+    ensure  => latest,
+}
+
+package { 'perl-Games-Word':
+    ensure  => latest,
+}
+
 file { "$base_path/wordscheater.com":
     ensure      => directory,
     owner       => $user,
