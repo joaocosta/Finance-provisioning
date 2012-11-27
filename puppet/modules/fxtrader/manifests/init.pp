@@ -1,5 +1,10 @@
 class fxtrader {
 include mysql
+include zonalivre_repo::client
+
+Exec {
+    path => ['/usr/bin'],
+}
 
 class { 'mysql::server':
 }
