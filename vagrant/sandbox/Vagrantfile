@@ -36,12 +36,12 @@ Vagrant::Config.run do |config|
   # Customize memory allocated to VM
   #config.vm.customize ["modifyvm", :id, "--memory", 1024]
 
-  config.vm.provision :puppet, :module_path => "../../puppet/modules" do |puppet|
+  config.vm.provision :puppet, :module_path => "../../puppet/modules", :facter => { "sandbox" => "true" } do |puppet|
      puppet.manifests_path = "../../puppet/manifests"
      puppet.manifest_file  = "apache.pp"
   end
 
-  config.vm.provision :puppet, :module_path => "../../puppet/modules", :options => "--verbose" do |puppet|
+  config.vm.provision :puppet, :module_path => "../../puppet/modules", :facter => { "sandbox" => "true" } do |puppet|
      puppet.manifests_path = "../../puppet/manifests"
      puppet.manifest_file  = "buildbox.pp"
   end
