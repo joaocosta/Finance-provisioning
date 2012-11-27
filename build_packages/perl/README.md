@@ -21,3 +21,7 @@ To build a package manually:
   - mach build $SPECFILE
   - find /var/tmp/mach/fedora-16-x86_64-updates -name "*rpm" -exec mv -v {} ~/rpmbuild/RPMS/noarch \;
   - createrepo ~/rpmbuild/RPMS/noarch
+
+
+To build a package which will be a dependency of something else you want to build
+  - Follow instructions as above, after it's done, run: mach yum clean all
