@@ -24,20 +24,25 @@ Vagrant::Config.run do |config|
   # an identifier, the second is the path on the guest to mount the
   # folder, and the third is the path on the host to the actual folder.
   # The remaining arguments are optional
-  # config.vm.share_folder "v-data", "/vagrant_data", "../data"
+  config.vm.share_folder "v-data", "/opt/src", "../../../", :owner => 'joao', :group => 'joao'
   # config.vm.share_folder "v-data", "/vagrant_data", "../data", :create => true, :extra => 'dmode=7777,fmode=7777', :owner => 'user', :group => 'group' 
 
   # By default, VirtualBox won't allow creation of symlinks in shared folders
   # Change that for the "v-data" share
-  #config.vm.customize [ "setextradata", :id,
-  #"VBoxInternal2/SharedFoldersEnableSymlinksCreate/v-data", "1"
-  #]
+  config.vm.customize [ "setextradata", :id,
+  "VBoxInternal2/SharedFoldersEnableSymlinksCreate/v-data", "1"
+  ]
 
   # Customize memory allocated to VM
   #config.vm.customize ["modifyvm", :id, "--memory", 1024]
 
-  config.vm.provision :puppet, :module_path => "../../puppet/modules" do |puppet|
+  config.vm.provision :puppet, :module_path => "../../puppet/modules", :facter => { "sandbox" => "true" } do |puppet|
      puppet.manifests_path = "../../puppet/manifests"
      puppet.manifest_file  = "apache.pp"
+  end
+
+  config.vm.provision :puppet, :module_path => "../../puppet/modules", :facter => { "sandbox" => "true" } do |puppet|
+     puppet.manifests_path = "../../puppet/manifests"
+     puppet.manifest_file  = "buildbox.pp"
   end
 end

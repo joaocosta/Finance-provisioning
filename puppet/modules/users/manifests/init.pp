@@ -2,7 +2,7 @@
 #
 # This module manages users, groups
 #
-# Parameters: $perl_version - version of the Perl Debian package to be installed, either a version string or 'latest'
+# Parameters: 
 #
 # Actions: 
 #

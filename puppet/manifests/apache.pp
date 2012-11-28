@@ -1,4 +1,5 @@
 include users
+include zonalivre_repo
 
 realize Users::Mkuser["joao"]
 
@@ -26,7 +27,7 @@ file { '/home/joao/sites':
     require     => User['joao'],
 }
 
-class {'zonalivre_repo':
+class {'zonalivre_repo::server':
     base_path   => '/home/joao/rpmbuild',
     user        => 'joao',
     group       => 'joao',

@@ -36,3 +36,8 @@ db:
     dbname: fxcm
     dbuser: fxcm
     dbpasswd: fxcm
+tradingProviders:
+    fxcm:
+        username: GBD118836001
+        password: 5358
+        accountType: Demo
