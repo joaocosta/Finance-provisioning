@@ -15,7 +15,7 @@ Vagrant::Config.run do |config|
   # Assign this VM to a bridged network, allowing you to connect directly to a
   # network using the host's network device. This makes the VM appear as another
   # physical device on your network.
-  # config.vm.network :bridged
+  config.vm.network :bridged
 
   # config.vm.forward_port 80, 8080
   config.vm.forward_port 80, 8080
@@ -36,10 +36,10 @@ Vagrant::Config.run do |config|
   # Customize memory allocated to VM
   #config.vm.customize ["modifyvm", :id, "--memory", 1024]
 
-  config.vm.provision :puppet, :module_path => "../../puppet/modules", :facter => { "sandbox" => "true" } do |puppet|
-     puppet.manifests_path = "../../puppet/manifests"
-     puppet.manifest_file  = "apache.pp"
-  end
+#  config.vm.provision :puppet, :module_path => "../../puppet/modules", :facter => { "sandbox" => "true" } do |puppet|
+#     puppet.manifests_path = "../../puppet/manifests"
+#     puppet.manifest_file  = "apache.pp"
+#  end
 
   config.vm.provision :puppet, :module_path => "../../puppet/modules", :facter => { "sandbox" => "true" } do |puppet|
      puppet.manifests_path = "../../puppet/manifests"
