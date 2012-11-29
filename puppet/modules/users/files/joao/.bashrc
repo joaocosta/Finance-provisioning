@@ -9,8 +9,6 @@ fi
 
 PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 
-export TRADER_HOME=~/src/Finance--HostedTrader
-
 echoIndicatorNow () {
 echo -e "Symbol\tNow\t\t\tEntry\tCurrent Price";
 eval.pl --symbol=$1 --timeframe=15min "datetime,$2,close";
