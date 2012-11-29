@@ -2,7 +2,7 @@ class buildbox::params {
 
     if $::osfamily == 'redhat' or $::operatingsystem == 'amazon' {
         $build_packages     = ['gcc', 'gcc-c++', 'make', 'mach', 'cpanspec']
-        $perl_build         = ['perl-Dist-Zilla', 'perl-Dist-Zilla-Plugin-PodWeaver', 'perl-Dist-Zilla-Git', 'perl-Pod-Elemental-Transformer-List', 'perl-App-cpanminus', 'perl-Test-Exception']
+        $perl_build         = ['perl-Dist-Zilla', 'perl-Dist-Zilla-Plugin-PodWeaver', 'perl-Dist-Zilla-Plugin-Git', 'perl-Pod-Elemental-Transformer-List', 'perl-App-cpanminus', 'perl-Test-Exception']
         $perl_utils         = ['perl-Pod-Perldoc']
 
         file { "/var/lib/mach/states/fedora-16-x86_64-updates":
