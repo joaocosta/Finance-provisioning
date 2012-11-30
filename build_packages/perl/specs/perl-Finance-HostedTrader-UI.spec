@@ -1,5 +1,5 @@
 Name:           perl-Finance-HostedTrader-UI
-Version:        0.01
+Version:        0.02
 Release:        2%{?dist}
 Summary:        Catalyst based application
 License:        MIT
@@ -72,6 +72,9 @@ rm -rf $RPM_BUILD_ROOT
 /usr/bin/finance_hostedtrader_ui_test.pl
 
 %changelog
+* Fri Nov 30 2012 João Costa <joaocosta@zonalivre.org> 0.02-2
+- Remove symbols which don't exist in the fxcm db
+
 * Sat Nov 24 2012 João Costa <joaocosta@zonalivre.org> 0.01-2
 - Update hardcoded download path
 
