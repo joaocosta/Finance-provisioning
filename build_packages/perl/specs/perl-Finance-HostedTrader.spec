@@ -1,5 +1,5 @@
 Name:           perl-Finance-HostedTrader
-Version:        0.010
+Version:        0.011
 Release:        1%{?dist}
 Summary:        Finance::HostedTrader Perl module
 License:        MIT
@@ -9,6 +9,7 @@ Source0:        http://www.cpan.org/modules/by-module/Finance/Finance-HostedTrad
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
 BuildRequires:  perl(Config::Any)
+BuildRequires:  perl(Data::Compare)
 BuildRequires:  perl(Date::Calc)
 BuildRequires:  perl(Date::Manip)
 BuildRequires:  perl(DBI)
@@ -31,6 +32,7 @@ BuildRequires:  perl(Text::ASCIITable)
 BuildRequires:  perl(YAML::Syck)
 BuildRequires:  perl(YAML::Tiny)
 Requires:       perl(Config::Any)
+Requires:       perl(Data::Compare)
 Requires:       perl(Date::Calc)
 Requires:       perl(Date::Manip)
 Requires:       perl(DBI)
@@ -75,7 +77,9 @@ find $RPM_BUILD_ROOT -depth -type d -exec rmdir {} 2>/dev/null \;
 %{_fixperms} $RPM_BUILD_ROOT/*
 
 %check
-make test
+#Don't run the tests here because the environment is not setup
+#dzil already runs them before cutting a release anyway
+#make test
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -95,9 +99,14 @@ rm -rf $RPM_BUILD_ROOT
 /usr/bin/testData.pl
 /usr/bin/testSignal.pl
 /usr/bin/updateTf.pl
+/usr/bin/fx-download-fxcm.pl
+/usr/bin/fx-trader.pl
 
 
 %changelog
+* Sat Nov 30 2012 João Costa <joaocosta@zonalivre.org> 0.011-1
+- New upstream version available
+
 * Sat Nov 24 2012 João Costa <joaocosta@zonalivre.org> 0.010-1
 - New upstream version available
 
