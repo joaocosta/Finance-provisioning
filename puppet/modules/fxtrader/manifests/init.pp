@@ -19,7 +19,7 @@ mysql::db { 'fxcm':
 
 package { 'perl-Finance-HostedTrader':
     ensure  => latest,
-    require => [ Class['zonalivre_repo::client'], File['/etc/fx.yml'] ],
+    require => [ Class['zonalivre_repo::client'], File['/etc/fxtrader/fx.yml'] ],
 }
 
 package { 'libmysqludf_ta':
@@ -41,18 +41,19 @@ mysql::db { 'fx':
     require  => File['/root/.my.cnf'],
 }
 
-file { "/etc/fx.yml":
-    source  => 'puppet:///modules/fxtrader/etc/fx.yml',
-    owner   => root,
-    group   => root,
-    mode    => '0644'
-}
-
 file { "/etc/fxtrader":
     ensure  => directory,
     owner   => root,
     group   => root,
     mode    => '0755',
+}
+
+file { "/etc/fxtrader/fx.yml":
+    source  => 'puppet:///modules/fxtrader/etc/fxtrader/fx.yml',
+    owner   => root,
+    group   => root,
+    mode    => '0644',
+    require => File['/etc/fxtrader'],
 }
 
 file { "/etc/fxtrader/fxtrader.log.conf":
