@@ -1,5 +1,5 @@
 Name:           perl-Finance-HostedTrader
-Version:        0.011
+Version:        0.013
 Release:        1%{?dist}
 Summary:        Finance::HostedTrader Perl module
 License:        MIT
@@ -19,9 +19,11 @@ BuildRequires:  perl(Hash::Merge)
 BuildRequires:  perl(HTML::Table)
 BuildRequires:  perl(List::Compare::Functional)
 BuildRequires:  perl(Log::Log4perl)
+BuildRequires:  perl(Math::Round)
 BuildRequires:  perl(MIME::Lite)
 BuildRequires:  perl(Moose)
 BuildRequires:  perl(Moose::Util::TypeConstraints)
+BuildRequires:  perl(MooseX::Log::Log4perl)
 BuildRequires:  perl(Params::Validate)
 BuildRequires:  perl(Parse::RecDescent)
 BuildRequires:  perl(Scalar::Util)
@@ -41,9 +43,11 @@ Requires:       perl(Hash::Merge)
 Requires:       perl(HTML::Table)
 Requires:       perl(List::Compare::Functional)
 Requires:       perl(Log::Log4perl)
+Requires:       perl(Math::Round)
 Requires:       perl(MIME::Lite)
 Requires:       perl(Moose)
 Requires:       perl(Moose::Util::TypeConstraints)
+Requires:       perl(MooseX::Log::Log4perl)
 Requires:       perl(Params::Validate)
 Requires:       perl(Parse::RecDescent)
 Requires:       perl(Scalar::Util)
@@ -104,6 +108,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Dec 04 2012 João Costa <joaocosta@zonalivre.org> 0.013-1
+- New upstream version available
+
 * Sat Nov 30 2012 João Costa <joaocosta@zonalivre.org> 0.011-1
 - New upstream version available
 
