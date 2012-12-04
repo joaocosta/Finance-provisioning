@@ -48,6 +48,21 @@ file { "/etc/fx.yml":
     mode    => '0644'
 }
 
+file { "/etc/fxtrader":
+    ensure  => directory,
+    owner   => root,
+    group   => root,
+    mode    => '0755',
+}
+
+file { "/etc/fxtrader/fxtrader.log.conf":
+    source  => 'puppet:///modules/fxtrader/etc/fxtrader/fxtrader.log.conf',
+    owner   => root,
+    group   => root,
+    mode    => '0666',
+    require => File["/etc/fxtrader"],
+}
+
 if !$::sandbox {
 file { "/etc/cron.d/forexite_download_data":
     source  => 'puppet:///modules/fxtrader/etc/cron.d/forexite_download_data',
