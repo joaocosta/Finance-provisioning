@@ -24,7 +24,6 @@ realize Users::Mkuser['joao']
 file { '/etc/localtime':
     ensure  => link,
     target  => '/usr/share/zoneinfo/UTC',
-    stage   => 'init',
 }
 
 class { 'zonalivre_repo::client':
