@@ -39,20 +39,26 @@ package { 'selinux-policy':
     require => Package['selinux-policy-targeted'],
 }
 
-class { 'zonalivre_repo::server':
-    base_path   => '/home/joao/rpmbuild',
-    user        => 'joao',
-    group       => 'joao',
+node default {
+    class { 'zonalivre_repo::server':
+        base_path   => '/home/joao/rpmbuild',
+        user        => 'joao',
+        group       => 'joao',
+    }
+
+    class { 'fxtrader': }
+    class { 'fxtrader::test': }
+    class { 'fxtrader::website': }
+
+    class { 'buildbox':
+        user => 'joao',
+    }
 }
 
-class { 'fxtrader': }
-class { 'fxtrader::test': }
-class { 'fxtrader::website': }
+node 'server.zonalivre.org' inherits 'default' {
+    class { 'site':
+        user    => 'joao',
+    }
 
-class { 'buildbox':
-    user => 'joao',
-}
-
-class { 'site':
-    user    => 'joao',
+    class { 'fxtrader::datafeed': }
 }
