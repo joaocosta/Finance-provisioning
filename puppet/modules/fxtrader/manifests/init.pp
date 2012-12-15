@@ -64,20 +64,4 @@ file { "/etc/fxtrader/fxtrader.log.conf":
     require => File["/etc/fxtrader"],
 }
 
-if !$::sandbox {
-file { "/etc/cron.d/forexite_download_data":
-    source  => 'puppet:///modules/fxtrader/etc/cron.d/forexite_download_data',
-    owner   => root,
-    group   => root,
-    mode    => '0644'
-}
-
-file { "/etc/cron.d/fxcm_download_data":
-    source  => 'puppet:///modules/fxtrader/etc/cron.d/fxcm_download_data',
-    owner   => root,
-    group   => root,
-    mode    => '0644'
-}
-}
-
 }
