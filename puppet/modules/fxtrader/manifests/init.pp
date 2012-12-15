@@ -1,6 +1,5 @@
 class fxtrader {
 include mysql
-include zonalivre_repo::client
 
 Exec {
     path => ['/usr/bin'],
@@ -14,23 +13,7 @@ mysql::db { 'fxcm':
     password => 'fxcm',
     host     => 'localhost',
     grant    => ['all'],
-    require  => File['/root/.my.cnf'],
-}
-
-package { 'perl-Finance-HostedTrader':
-    ensure  => latest,
-    require => [ Class['zonalivre_repo::client'], File['/etc/fxtrader/fx.yml'] ],
-}
-
-package { 'libmysqludf_ta':
-    ensure  => latest,
-    require => [ Class['zonalivre_repo::client'], ],
-}
-
-exec { 'setup libmysqludf_ta':
-    command => 'mysql -uroot < /usr/share/libmysqludf_ta/db_install_lib_mysqludf_ta',
-    unless  => "mysql -uroot -e 'SELECT ta_ema(A,1) FROM (select 1.0 AS A) AS T'",
-    require => [ Package['libmysqludf_ta'], Class['mysql::server'], Class['mysql'] ],
+    require  => File['/root/.my.cnf'], #This resource is declared in the mysql module. There's a bug there because it tries to use "/root/.my.cnf" before it's been deployed, so i force the dependency here to workaround that. Raised http://projects.puppetlabs.com/issues/17802, someone there proposed a different workaround using stages. Note that just requiring Class['mysql::server'] is not enough to work around this.
 }
 
 mysql::db { 'fx':
@@ -39,6 +22,35 @@ mysql::db { 'fx':
     host     => 'localhost',
     grant    => ['all'],
     require  => File['/root/.my.cnf'],
+}
+
+exec {"db_schema":
+    require     => Package['perl-Finance-HostedTrader'],
+    command     => "/usr/bin/createDBSchema.pl > /tmp/db_schema.sql",
+    logoutput   => "on_failure",
+}
+
+exec { "setup_db_tables":
+    unless      => "/usr/bin/mysql -ufxcm -e 'select count(1) from EURUSD_86400' fxcm",
+    require     => [Exec["db_schema"], Database['fxcm']],
+    command     => "/usr/bin/mysql -uroot fxcm < /tmp/db_schema.sql",
+    logoutput   => "on_failure",
+}
+
+package { 'perl-Finance-HostedTrader':
+    ensure  => latest,
+    require => [ File['/etc/fxtrader/fx.yml'] ],
+}
+
+package { 'libmysqludf_ta':
+    ensure  => latest,
+    require => Class['mysql::server'],
+}
+
+exec { 'setup libmysqludf_ta':
+    command => 'mysql -uroot < /usr/share/libmysqludf_ta/db_install_lib_mysqludf_ta',
+    unless  => "mysql -uroot -e 'SELECT ta_ema(A,1) FROM (select 1.0 AS A) AS T'",
+    require => [ Package['libmysqludf_ta'], Class['mysql::server'], Class['mysql'] ],
 }
 
 file { "/etc/fxtrader":
