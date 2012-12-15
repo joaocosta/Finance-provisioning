@@ -19,7 +19,7 @@ Vagrant::Config.run do |config|
 
   # config.vm.forward_port 80, 8080
   config.vm.forward_port 80, 8080
- 
+
   # Share an additional folder to the guest VM. The first argument is
   # an identifier, the second is the path on the guest to mount the
   # folder, and the third is the path on the host to the actual folder.
@@ -43,6 +43,6 @@ Vagrant::Config.run do |config|
 
   config.vm.provision :puppet, :module_path => "../../puppet/modules", :facter => { "sandbox" => "true" } do |puppet|
      puppet.manifests_path = "../../puppet/manifests"
-     puppet.manifest_file  = "buildbox.pp"
+     puppet.manifest_file  = "site.pp"
   end
 end
