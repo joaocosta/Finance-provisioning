@@ -1,4 +1,6 @@
-class buildbox {
+class buildbox(
+    $user,
+) {
     include buildbox::params
 
     Exec { path => [ "/bin/", "/sbin/" , "/usr/bin/", "/usr/sbin/" ] }
@@ -25,13 +27,9 @@ class buildbox {
         ensure      => latest,
     }
 
-    include users
-    realize Users::Mkuser["joao"]
-
-    exec { "allow joao":
-        command => "usermod -a -G mach joao",
-        require => [Package["mach"], User["joao"]],
+    exec { "allow $user":
+        command => "usermod -a -G mach $user",
+        require => [Package["mach"], User[$user]],
     }
-
 }
 
