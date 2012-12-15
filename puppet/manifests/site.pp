@@ -47,11 +47,18 @@ node default {
     }
 
     class { 'fxtrader': }
-    class { 'fxtrader::test': }
     class { 'fxtrader::website': }
+}
 
+node 'devbox.zonalivre.org' inherits 'default' {
     class { 'buildbox':
         user => 'joao',
+    }
+
+    class { 'fxtrader::test': }
+
+    package { 'strace':
+        ensure  => latest,
     }
 }
 
