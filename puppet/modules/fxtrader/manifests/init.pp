@@ -31,7 +31,7 @@ exec {"db_schema":
 }
 
 exec { "setup_db_tables":
-    unless      => "/usr/bin/mysql -ufxcm -e 'select count(1) from EURUSD_86400' fxcm",
+    unless      => "/usr/bin/mysql -ufxcm -pfxcm -e 'select count(1) from EURUSD_86400' fxcm",
     require     => [Exec["db_schema"], Database['fxcm']],
     command     => "/usr/bin/mysql -uroot fxcm < /tmp/db_schema.sql",
     logoutput   => "on_failure",
