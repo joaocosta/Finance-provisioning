@@ -1,5 +1,5 @@
 Name:           perl-Finance-HostedTrader
-Version:        0.014
+Version:        0.015
 Release:        1%{?dist}
 Summary:        Finance::HostedTrader Perl module
 License:        MIT
@@ -88,24 +88,29 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,-)
-%doc Changes dist.ini LICENSE README weaver.ini
+%doc Changes dist.ini howtos LICENSE README weaver.ini
 %{perl_vendorlib}/*
 %{_mandir}/man3/*
 %{_mandir}/man1/*
-/usr/bin/AllTables.pl
-/usr/bin/createDBSchema.pl
-/usr/bin/dataUp2Date.pl
-/usr/bin/eval.pl
-/usr/bin/showConfig.pl
-/usr/bin/synthetics.pl
-/usr/bin/testData.pl
-/usr/bin/testSignal.pl
-/usr/bin/updateTf.pl
+/usr/bin/fx-all-tables.pl
+/usr/bin/fx-build-synthetics.pl
+/usr/bin/fx-create-db-schema.pl
+/usr/bin/fx-data-up-2-date.pl
 /usr/bin/fx-download-fxcm.pl
+/usr/bin/fx-eval.pl
+/usr/bin/fx-report.pl
+/usr/bin/fx-score.pl
+/usr/bin/fx-show-config.pl
+/usr/bin/fx-test-data.pl
+/usr/bin/fx-test-signal.pl
 /usr/bin/fx-trader.pl
+/usr/bin/fx-update-tf.pl
 
 
 %changelog
+* Tue Dec 16 2012 João Costa <joaocosta@zonalivre.org> 0.015-1
+- New upstream version available
+
 * Tue Dec 09 2012 João Costa <joaocosta@zonalivre.org> 0.014-1
 - New upstream version available
 

@@ -26,7 +26,8 @@ mysql::db { 'fx':
 
 exec {"db_schema":
     require     => Package['perl-Finance-HostedTrader'],
-    command     => "/usr/bin/createDBSchema.pl > /tmp/db_schema.sql",
+    command     => "/usr/bin/fx-create-db-schema.pl > /tmp/db_schema.sql",
+    require     => Package['perl-Finance-HostedTrader'],
     logoutput   => "on_failure",
 }
 
