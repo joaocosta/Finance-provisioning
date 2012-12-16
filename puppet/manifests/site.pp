@@ -62,7 +62,7 @@ node 'devbox.zonalivre.org' inherits 'default' {
     }
 }
 
-node 'server.zonalivre.org' inherits 'default' {
+node 'server.fxhistoricaldata.com' inherits 'default' {
     class { 'site':
         user    => 'joao',
     }
