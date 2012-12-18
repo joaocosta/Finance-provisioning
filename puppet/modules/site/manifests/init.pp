@@ -13,7 +13,7 @@ class site (
         base_path   => "/home/$user/sites",
         user        => $user,
         group       => $user,
-        require     => [ File["/home/$user/sites"], Class['zonalivre_repo::client'] ],
+        require     => [ File["/home/$user/sites"] ],
     }
 
     class { 'site::zonalivre':

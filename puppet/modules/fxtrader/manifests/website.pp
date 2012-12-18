@@ -3,7 +3,6 @@ include apache
 
 package { 'perl-Finance-HostedTrader-UI':
     ensure  => latest,
-    require => Class['zonalivre_repo::client'],
     notify  => Service['httpd'],
 }
 
