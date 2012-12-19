@@ -39,6 +39,10 @@ node default {
 
     class { 'fxtrader': }
     class { 'fxtrader::website': }
+
+    package { 'vim-enhanced':
+        ensure  => latest,
+    }
 }
 
 node 'devbox.zonalivre.org' inherits 'default' {
