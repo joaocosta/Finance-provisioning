@@ -25,11 +25,13 @@ class users {
             uid        => "40001",
             gid        => "40001",
             managehome => "true",
+            groups     => "mach",
             comment    => "Joao Costa",
             authorized_key_ensure => present,
             authorized_key_type   => "ssh-rsa",
             authorized_key_string => "AAAAB3NzaC1yc2EAAAADAQABAAABAQC6hE75Ox6wDfXVJzXeKdyUBO4o19TtGxboJTI2vR3CE9ZJbODIxSr+tfMZcwmuSF892PiahhVzAA2wJ6LdMtFH6FUIGvjU0i7jIo/x+TmvheH46N9qllo2C2ZlxL/HbpRYIyqEntUYcBQzYBvUwnzoDFgS1GhG4LalYp0U9zlHGOA/Wk7qBjH8Ca1mtPSnxudsb/NwERIjfLbvdX9Fc+vkx6fs3ykJv+p8lPEZkw3kcVAfuyhnXzE7kprSHDuOuQo0FDvCTjy9ISxZPvExKT7bD7vQRlrx9PLzYSWI7/evonWHR8c/jPS8U56ii8YH/rtC/iqo4LiwKFxoxaDdS2wD",
             sudonopasswd => true,
+            requires    => [ Group['joao'], Package['mach'] ],
             ;
     } # @mkuser
 
@@ -66,37 +68,38 @@ class users {
     $authorized_key_ensure = "absent",
     $authorized_key_type = "ssh-rsa",
     $authorized_key_string = undef,
-    $sudonopasswd = false
+    $sudonopasswd = false,
+    $requires   = [ Group[$group], Group[$groups] ],
     ) {
 
         # create user
-        user { "$name":
-            uid        => "$uid",
-            gid        => "$gid",
-            shell      => "$shell",
+        user { $name:
+            uid        => $uid,
+            gid        => $gid,
+            shell      => $shell,
             groups     => $groups,
             membership => inclusive,
             password   => $password,
-            managehome => "$managehome",
-            home       => "$home",
+            managehome => $managehome,
+            home       => $home,
             ensure     => "present",
-            comment    => "$comment",
-            require    => [ Group["$group"], Group[$groups] ]
+            comment    => $comment,
+            require    => $requires,
         } # user
 
-        group { "$name":
-            gid    => "$gid",
-            name   => "$group",
+        group { $name:
+            gid    => $gid,
+            name   => $group,
             ensure => "present",
         } # group
 
         ssh_authorized_key { "$name":
-            user    => "$name",
+            user    => $name,
             ensure  => $authorized_key_ensure,
-            key     => "$authorized_key_string",
-            type    => "$authorized_key_type",
-            name    => "$name",
-            require => User["$name"],
+            key     => $authorized_key_string,
+            type    => $authorized_key_type,
+            name    => $name,
+            require => User[$name],
         } # ssh_authorized_keys
 
         # create home dir
@@ -104,7 +107,7 @@ class users {
             ensure  => directory,
             owner   => $name,
             group   => $name,
-            require => User["$name"],
+            require => User[$name],
             recurse => true,
             source  => ["puppet:///modules/users/${name}", "puppet:///modules/users/skel"],
         } # file
@@ -119,7 +122,7 @@ class users {
                     mode    => "700",
                     owner   => $name,
                     group   => $name,
-                    require => User["$name"],
+                    require => User[$name],
                 } # file
             } # 'ensure' or 'true'
         } # case

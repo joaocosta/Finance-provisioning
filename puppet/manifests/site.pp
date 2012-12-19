@@ -46,9 +46,7 @@ node default {
 }
 
 node 'devbox.zonalivre.org' inherits 'default' {
-    class { 'buildbox':
-        user => 'joao',
-    }
+    class { 'buildbox': }
 
     class { 'fxtrader::test': }
 

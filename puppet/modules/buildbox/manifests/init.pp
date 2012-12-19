@@ -1,9 +1,5 @@
-class buildbox(
-    $user,
-) {
+class buildbox {
     include buildbox::params
-
-    Exec { path => [ "/bin/", "/sbin/" , "/usr/bin/", "/usr/sbin/" ] }
 
     package { "ruby-devel":
         ensure      => latest,
@@ -25,11 +21,6 @@ class buildbox(
 
     package { $buildbox::params::perl_utils:
         ensure      => latest,
-    }
-
-    exec { "allow $user":
-        command => "usermod -a -G mach $user",
-        require => [Package["mach"], User[$user]],
     }
 }
 
