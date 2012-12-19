@@ -1,4 +1,0 @@
-[zonalivre]
-name=Zonalivre
-baseurl=http://packages.zonalivre.org/RPMS/noarch/
-gpgcheck=0
