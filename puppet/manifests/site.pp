@@ -4,40 +4,31 @@ stage { 'init':
     before  => Stage['main'],
 }
 
-include users
-realize Users::Mkuser['joao']
+class stage_init {
+    zonalivre_repo::client { "site_zonalivre_repo": }
 
-#exec { 'mount_src':
-#    command => 'mount -t vboxsf -o uid=`id -u joao`,gid=`id -g joao` v-data /opt/src',
-#    require => [ User['joao'], Group['joao'] ],
-#}
+    file { '/etc/localtime':
+        ensure  => link,
+        target  => '/usr/share/zoneinfo/UTC',
+    }
 
-#mount { 'opt/src':
-#    atboot  => 'false',
-#    device  => 'v-data',
-#    ensure  => 'mounted',
-#    fstype  => 'vboxsf',
-#    remounts=> 'true',
-#    options => 'defaults',
-#}
+    package { 'selinux-policy-targeted':
+        ensure  => absent,
+    }
 
-file { '/etc/localtime':
-    ensure  => link,
-    target  => '/usr/share/zoneinfo/UTC',
+    package { 'selinux-policy':
+        ensure  => absent,
+        require => Package['selinux-policy-targeted'],
+    }
 }
 
-class { 'zonalivre_repo::client':
+class { 'stage_init':
     stage   => 'init',
 }
 
-package { 'selinux-policy-targeted':
-    ensure  => absent,
-}
 
-package { 'selinux-policy':
-    ensure  => absent,
-    require => Package['selinux-policy-targeted'],
-}
+include users
+realize Users::Mkuser['joao']
 
 node default {
     class { 'zonalivre_repo::server':

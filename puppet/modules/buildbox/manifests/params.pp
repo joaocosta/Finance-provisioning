@@ -27,12 +27,10 @@ class buildbox::params {
             require => File["/var/lib/mach/states/fedora-16-x86_64-updates/yum"],
         }
 
-        file { "/var/lib/mach/states/fedora-16-x86_64-updates/yum/yum.repos.d/zonalivre.repo":
-            ensure  => present,
-            source  => 'puppet:///modules/zonalivre_repo/zonalivre.repo',
-            group   => 'mach',
-            mode    => '0644',
-            require => File["/var/lib/mach/states/fedora-16-x86_64-updates/yum/yum.repos.d"],
+        zonalivre_repo::client { 'chroot_zonalivre_repo':
+            location    => '/var/lib/mach/states/fedora-16-x86_64-updates/yum/yum.repos.d/zonalivre.repo',
+            group       => 'mach',
+            require => File['/var/lib/mach/states/fedora-16-x86_64-updates/yum/yum.repos.d'],
         }
 #END TODO
     } elsif $::osfamily == 'debian' {
