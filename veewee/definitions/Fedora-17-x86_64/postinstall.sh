@@ -20,7 +20,8 @@ yum -y install \
   rubygem-polyglot \
   rubygem-rest-client \
   rubygem-treetop \
-  rubygem-uuidtools
+  rubygem-uuidtools \
+  cfengine
 
 cd /tmp
 wget http://download.virtualbox.org/virtualbox/$VBOX_VERSION/VBoxGuestAdditions_$VBOX_VERSION.iso
@@ -30,6 +31,11 @@ umount /mnt
 rm VBoxGuestAdditions_$VBOX_VERSION.iso
 
 gem install chef --no-rdoc --no-ri
+
+# Zero out the free space to save space in the final image:
+dd if=/dev/zero of=/EMPTY bs=1M
+rm -f /EMPTY
+
 
 exit
 
