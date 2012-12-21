@@ -1,7 +1,7 @@
 class buildbox::params {
 
     if $::osfamily == 'redhat' or $::operatingsystem == 'amazon' {
-        $build_packages     = ['gcc', 'gcc-c++', 'make', 'mach', 'cpanspec']
+        $build_packages     = ['gcc', 'gcc-c++', 'make', 'mach', 'cpanspec', 'mysql-devel', 'automake', 'autoconf', 'libtool']
         $perl_build         = ['perl-Dist-Zilla', 'perl-Dist-Zilla-Plugin-PodWeaver', 'perl-Term-UI', 'perl-Dist-Zilla-Plugin-Git', 'perl-Pod-Elemental-Transformer-List', 'perl-App-cpanminus', 'perl-Test-Exception']
         $perl_utils         = ['perl-Pod-Perldoc']
 
