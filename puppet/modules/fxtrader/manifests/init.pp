@@ -44,7 +44,7 @@ package { 'perl-Finance-HostedTrader':
 
 package { 'libmysqludf_ta':
     ensure  => latest,
-    require => Class['mysql::server'],
+    notify  => Service['mysqld'],
 }
 
 exec { 'setup libmysqludf_ta':
