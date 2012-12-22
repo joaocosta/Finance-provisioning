@@ -24,7 +24,7 @@ mysql::db { 'fx':
     require  => File['/root/.my.cnf'],
 }
 
-exec {"db_schema":
+exec {"fetch_db_schema":
     require     => Package['perl-Finance-HostedTrader'],
     command     => "/usr/bin/fx-create-db-schema.pl > /tmp/db_schema.sql",
     logoutput   => "on_failure",
@@ -32,7 +32,7 @@ exec {"db_schema":
 
 exec { "setup_db_tables":
     unless      => "/usr/bin/mysql -ufxcm -pfxcm -e 'select count(1) from EURUSD_86400' fxcm",
-    require     => [Exec["db_schema"], Database['fxcm']],
+    require     => [Exec["fetch_db_schema"], Database['fxcm']],
     command     => "/usr/bin/mysql -uroot fxcm < /tmp/db_schema.sql",
     logoutput   => "on_failure",
 }
