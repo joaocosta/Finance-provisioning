@@ -28,20 +28,19 @@ class users {
             comment     => 'Apache',
             shell       => '/sbin/nologin',
             mode        => '0755',
-            requires    => [ Package['httpd'] ],
+            require     => [ Package['httpd'] ], # The apache user is actually created by a pre-install script in the httpd package. it's only defined here so dependencies on User[apache] can be added.
             ;
         "joao":
             uid        => "40001",
             gid        => "40001",
             managehome => "true",
-            groups     => "mach",
+            groups     => ['mach'],
             comment    => "Joao Costa",
             authorized_key_ensure => present,
             authorized_key_type   => "ssh-rsa",
             authorized_key_string => "AAAAB3NzaC1yc2EAAAADAQABAAABAQC6hE75Ox6wDfXVJzXeKdyUBO4o19TtGxboJTI2vR3CE9ZJbODIxSr+tfMZcwmuSF892PiahhVzAA2wJ6LdMtFH6FUIGvjU0i7jIo/x+TmvheH46N9qllo2C2ZlxL/HbpRYIyqEntUYcBQzYBvUwnzoDFgS1GhG4LalYp0U9zlHGOA/Wk7qBjH8Ca1mtPSnxudsb/NwERIjfLbvdX9Fc+vkx6fs3ykJv+p8lPEZkw3kcVAfuyhnXzE7kprSHDuOuQo0FDvCTjy9ISxZPvExKT7bD7vQRlrx9PLzYSWI7/evonWHR8c/jPS8U56ii8YH/rtC/iqo4LiwKFxoxaDdS2wD",
             sudonopasswd => true,
             recursehomedir  => true,
-            requires    => [ Group['joao'], Package['mach'] ],
             ;
     } # @mkuser
 
@@ -50,10 +49,11 @@ class users {
     # to avoid using the same numbers
     #
     # please keep sorted by GID
-#    @mkgroup {
-#        "dev":
-#            gid => "30002";
-#    } # @mkgroup
+    @mkgroup {
+        'mach':
+            gid         => '30002',
+            require    => Package['mach'];
+    } # @mkgroup
 
 
     # which of the users above should be absent
@@ -82,7 +82,7 @@ class users {
     $recursehomedir = false,
     $homeowner = $name,
     $homegroup = $group,
-    $requires   = [ Group[$group], Group[$groups] ],
+    $require   = [ Group[$groups] ],
     ) {
 
         # create user
@@ -97,13 +97,13 @@ class users {
             home       => $home,
             ensure     => "present",
             comment    => $comment,
-            require    => $requires,
+            require    => $require,
         } # user
 
         group { $name:
             gid    => $gid,
             name   => $group,
-            ensure => "present",
+            ensure => present,
         } # group
 
         ssh_authorized_key { "$name":
@@ -168,11 +168,15 @@ class users {
     #
     #   realize Generic::Mkgroup[systems]
     #
-    define mkgroup ($gid) {
-        group { "$name":
-            ensure => present,
-            gid    => "$gid",
-            name   => "$name",   
+    define mkgroup (
+        $gid,
+        $require = undef
+    ) {
+        group { $name:
+            ensure      => present,
+            gid         => $gid,
+            name        => $name,
+            require     => $require,
         } # group
     } # define mkgroup
 

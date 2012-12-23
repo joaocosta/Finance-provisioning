@@ -29,8 +29,9 @@ class { 'stage_init':
 
 node default {
     include users
-    realize Users::Mkuser['joao']
-    realize Users::Mkuser['apache']
+
+    Users::Mkgroup <| |>
+    Users::Mkuser <| |>
 
     class { 'zonalivre_repo::server':
         base_path   => '/home/joao/rpmbuild',
