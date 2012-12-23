@@ -21,6 +21,15 @@ class users {
     #
     # please keep sorted by UID
     @mkuser {
+        'apache':
+            uid         => '48',
+            managehome  => false,
+            home        => '/var/www',
+            comment     => 'Apache',
+            shell       => '/sbin/nologin',
+            mode        => '0755',
+            requires    => [ Package['httpd'] ],
+            ;
         "joao":
             uid        => "40001",
             gid        => "40001",
@@ -31,6 +40,7 @@ class users {
             authorized_key_type   => "ssh-rsa",
             authorized_key_string => "AAAAB3NzaC1yc2EAAAADAQABAAABAQC6hE75Ox6wDfXVJzXeKdyUBO4o19TtGxboJTI2vR3CE9ZJbODIxSr+tfMZcwmuSF892PiahhVzAA2wJ6LdMtFH6FUIGvjU0i7jIo/x+TmvheH46N9qllo2C2ZlxL/HbpRYIyqEntUYcBQzYBvUwnzoDFgS1GhG4LalYp0U9zlHGOA/Wk7qBjH8Ca1mtPSnxudsb/NwERIjfLbvdX9Fc+vkx6fs3ykJv+p8lPEZkw3kcVAfuyhnXzE7kprSHDuOuQo0FDvCTjy9ISxZPvExKT7bD7vQRlrx9PLzYSWI7/evonWHR8c/jPS8U56ii8YH/rtC/iqo4LiwKFxoxaDdS2wD",
             sudonopasswd => true,
+            recursehomedir  => true,
             requires    => [ Group['joao'], Package['mach'] ],
             ;
     } # @mkuser
@@ -69,6 +79,9 @@ class users {
     $authorized_key_type = "ssh-rsa",
     $authorized_key_string = undef,
     $sudonopasswd = false,
+    $recursehomedir = false,
+    $homeowner = $name,
+    $homegroup = $group,
     $requires   = [ Group[$group], Group[$groups] ],
     ) {
 
@@ -102,17 +115,20 @@ class users {
             require => User[$name],
         } # ssh_authorized_keys
 
+        if $managehome {
+
         # create home dir
         file { "$home":
             ensure  => directory,
-            owner   => $name,
-            group   => $name,
+            owner   => $homeowner,
+            group   => $homegroup,
             require => User[$name],
-            recurse => true,
+            recurse => $recursehomedir,
             source  => ["puppet:///modules/users/${name}", "puppet:///modules/users/skel"],
         } # file
 
         File <| name == $home |> { mode => 755 }
+        }
 
         # create ~/.ssh
         case $dotssh {

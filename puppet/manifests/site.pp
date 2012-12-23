@@ -30,11 +30,12 @@ class { 'stage_init':
 node default {
     include users
     realize Users::Mkuser['joao']
+    realize Users::Mkuser['apache']
 
     class { 'zonalivre_repo::server':
         base_path   => '/home/joao/rpmbuild',
-        user        => 'joao',
-        group       => 'joao',
+        user        => 'apache',
+        group       => 'apache',
     }
 
     class { 'fxtrader': }
