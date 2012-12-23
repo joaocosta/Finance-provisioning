@@ -34,7 +34,7 @@ class users {
             uid        => "40001",
             gid        => "40001",
             managehome => "true",
-            groups     => ['mach'],
+            groups     => ['mach', 'users'],
             comment    => "Joao Costa",
             authorized_key_ensure => present,
             authorized_key_type   => "ssh-rsa",
@@ -50,6 +50,9 @@ class users {
     #
     # please keep sorted by GID
     @mkgroup {
+        'users':
+            gid         => '30001',
+            require    => Package['mach'];
         'mach':
             gid         => '30002',
             require    => Package['mach'];
@@ -82,7 +85,7 @@ class users {
     $recursehomedir = false,
     $homeowner = $name,
     $homegroup = $group,
-    $require   = [ Group[$groups] ],
+    $require   = [ ],
     ) {
 
         # create user

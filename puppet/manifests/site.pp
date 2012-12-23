@@ -30,8 +30,7 @@ class { 'stage_init':
 node default {
     include users
 
-    Users::Mkgroup <| |>
-    Users::Mkuser <| |>
+    Users::Mkuser <| groups == 'users' |>
 
     class { 'zonalivre_repo::server':
         base_path   => '/home/joao/rpmbuild',
@@ -48,6 +47,10 @@ node default {
 }
 
 node 'devbox.zonalivre.org' inherits 'default' {
+
+    Users::Mkuser <| |>
+    Users::Mkgroup <| name == 'mach' |>
+
     class { 'buildbox': }
 
     class { 'fxtrader::test': }
