@@ -31,7 +31,7 @@ node default {
     include users
 
     Users::Mkuser <| groups == 'users' |>
-    Users::Mkuser <| name == 'apache' |>
+    realize Users::Mkuser['apache']
 
     class { 'zonalivre_repo::server':
         base_path   => '/home/joao/rpmbuild',

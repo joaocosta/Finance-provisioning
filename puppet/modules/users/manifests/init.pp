@@ -131,7 +131,6 @@ class users {
         } # file
 
         File <| name == $home |> { mode => 755 }
-        }
 
         # create ~/.ssh
         case $dotssh {
@@ -145,6 +144,8 @@ class users {
                 } # file
             } # 'ensure' or 'true'
         } # case
+
+        }
 
         if $sudonopasswd {
             sudonopasswd { $name: }
