@@ -47,11 +47,23 @@ package { 'libmysqludf_ta':
     notify  => Service['mysqld'],
 }
 
-exec { 'setup libmysqludf_ta':
-    command => 'mysql -uroot < /usr/share/libmysqludf_ta/db_install_lib_mysqludf_ta',
-    unless  => "mysql -uroot -e 'SELECT ta_ema(A,1) FROM (select 1.0 AS A) AS T'",
-    require => [ Package['libmysqludf_ta'], Class['mysql::server'], Class['mysql'] ],
+define setup_libmysqludf_ta {
+    exec { "setup libmysqludf_ta_${name}":
+        command => "mysql -uroot < /usr/share/libmysqludf_ta/lib_mysqludf_ta_${name}_up",
+        unless  => "test $(mysql -N -uroot -e 'select count(1) from mysql.func where name = \"ta_${name}\"') -eq 1",
+        require => [ Package['libmysqludf_ta'], Class['mysql::server'], Class['mysql'] ],
+    }
 }
+
+setup_libmysqludf_ta { "ema": }
+setup_libmysqludf_ta { "max": }
+setup_libmysqludf_ta { "min": }
+setup_libmysqludf_ta { "previous": }
+setup_libmysqludf_ta { "rsi": }
+setup_libmysqludf_ta { "sma": }
+setup_libmysqludf_ta { "stddevp": }
+setup_libmysqludf_ta { "sum": }
+setup_libmysqludf_ta { "tr": }
 
 file { "/etc/fxtrader":
     ensure  => directory,
