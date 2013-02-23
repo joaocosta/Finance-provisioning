@@ -59,6 +59,14 @@ node 'devbox.zonalivre.org' inherits 'default' {
     package { 'strace':
         ensure  => latest,
     }
+
+    package { 'perl(Catalyst::Restarter)':
+        ensure  => latest,
+    }
+
+    package { 'perl-CPAN':
+        ensure  => latest,
+    }
 }
 
 node 'server.fxhistoricaldata.com' inherits 'default' {
