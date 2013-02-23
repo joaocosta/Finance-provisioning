@@ -23,14 +23,14 @@ NameVirtualHost <%= vhost_name %>:<%= port %>
     PerlResponseHandler Finance::HostedTrader::UI
   </Location>
 
-  Alias /yui /home/joao/sites/fxhistoricaldata.com/Finance-HostedTrader-UI/root/yui
-  <Directory /home/joao/sites/fxhistoricaldata.com/Finance-HostedTrader-UI/root/yui>
-    Order allow,deny
-    Allow from all
-  </Directory>
+#  Alias /yui /home/joao/sites/fxhistoricaldata.com/Finance-HostedTrader-UI/root/yui
+#  <Directory /home/joao/sites/fxhistoricaldata.com/Finance-HostedTrader-UI/root/yui>
+#    Order allow,deny
+#    Allow from all
+#  </Directory>
 
-  Alias /s1 /home/joao/sites/fxhistoricaldata.com/Finance-HostedTrader-UI/root/s1
-  PerlModule Finance::HostedTrader::UI
+#  Alias /s1 /home/joao/sites/fxhistoricaldata.com/Finance-HostedTrader-UI/root/s1
+#  PerlModule Finance::HostedTrader::UI
 
   ErrorLog <%= logroot %>/<%= name %>_error.log
   LogLevel warn
