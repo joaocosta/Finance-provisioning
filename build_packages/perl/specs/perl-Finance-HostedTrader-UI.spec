@@ -1,6 +1,6 @@
 Name:           perl-Finance-HostedTrader-UI
-Version:        0.02
-Release:        2%{?dist}
+Version:        0.03
+Release:        1%{?dist}
 Summary:        Catalyst based application
 License:        MIT
 Group:          Development/Libraries
@@ -28,6 +28,10 @@ Requires:       perl(Catalyst::Plugin::Static::Simple)
 Requires:       perl(Catalyst::Runtime) >= 5.80013
 Requires:       perl(Catalyst::View::TT)
 Requires:       perl(Config::General)
+# cpan2spec added the CPAN dependency but I'm commenting it out, think it might only be required in dev (puppet installs it in dev anyway)
+#Requires:       perl(CPAN)
+Requires:       perl(ExtUtils::MakeMaker) >= 6.42
+Requires:       perl(File::Copy::Recursive)
 Requires:       perl(Finance::HostedTrader)
 Requires:       perl(JSON)
 Requires:       perl(parent)
@@ -72,6 +76,9 @@ rm -rf $RPM_BUILD_ROOT
 /usr/bin/finance_hostedtrader_ui_test.pl
 
 %changelog
+* Sat Feb 23 2013 João Costa <joaocosta@zonalivre.org> 0.03-1
+- API change, make list of symbols optional in the /signal/parse handler
+
 * Fri Nov 30 2012 João Costa <joaocosta@zonalivre.org> 0.02-2
 - Remove symbols which don't exist in the fxcm db
 
