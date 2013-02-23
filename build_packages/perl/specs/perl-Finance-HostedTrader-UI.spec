@@ -1,6 +1,6 @@
 Name:           perl-Finance-HostedTrader-UI
 Version:        0.03
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Catalyst based application
 License:        MIT
 Group:          Development/Libraries
@@ -78,6 +78,7 @@ rm -rf $RPM_BUILD_ROOT
 %changelog
 * Sat Feb 23 2013 João Costa <joaocosta@zonalivre.org> 0.03-1
 - API change, make list of symbols optional in the /signal/parse handler
+- JSONP support for /signal/parse
 
 * Fri Nov 30 2012 João Costa <joaocosta@zonalivre.org> 0.02-2
 - Remove symbols which don't exist in the fxcm db
