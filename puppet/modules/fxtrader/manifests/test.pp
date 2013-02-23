@@ -3,6 +3,9 @@ class fxtrader::test {
     file { '/tmp/testdata.tar':
       source => 'puppet:///modules/fxtrader/testdata.tar',
       ensure => 'present',
+      owner  => 'root',
+      group  => 'root',
+      mode   => '666',
     }
 
     exec { 'load_test_data':
