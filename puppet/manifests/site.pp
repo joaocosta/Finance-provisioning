@@ -60,11 +60,7 @@ node 'devbox.zonalivre.org' inherits 'default' {
         ensure  => latest,
     }
 
-    package { 'perl(Catalyst::Restarter)':
-        ensure  => latest,
-    }
-
-    package { 'perl-CPAN':
+    package { ['perl-Catalyst-Devel', 'perl-CPAN']:
         ensure  => latest,
     }
 }
