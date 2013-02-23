@@ -6,3 +6,8 @@ Tools used here are:
     Creates chroot isolated environments to build packages in
   - fpm - https://github.com/jordansissel/fpm
     A simple to use package builder that can do rpm, deb and more
+
+
+If mach build fails, try cleaning the build chroot:
+  - mach clean
+  - cp /etc/yum.repos.d/zonalivre.repo /var/lib/mach/states/fedora-16-x86_64-updates/yum/yum.repos.d/
