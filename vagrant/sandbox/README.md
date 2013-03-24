@@ -9,3 +9,6 @@ bridged networking support in Vagrant varies, I had to change the following file
 -- vm.channel.sudo("/sbin/ifup eth#{interface} 2> /dev/null")
 ++ vm.channel.sudo("/sbin/ifup eth#{interface} || /bin/true 2> /dev/null")
 
+# To keep guest additions in sync between host and guest
+
+vagrant gem install vagrant-vbguest
