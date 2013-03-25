@@ -42,7 +42,7 @@ node default {
     class { 'fxtrader': }
     class { 'fxtrader::website': }
 
-    package { 'vim-enhanced':
+    package { ['vim-enhanced', 'screen']:
         ensure  => latest,
     }
 }
