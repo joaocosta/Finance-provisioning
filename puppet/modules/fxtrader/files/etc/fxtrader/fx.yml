@@ -18,6 +18,7 @@ symbols:
         - USDJPY
         - XAUUSD
         - XAGUSD
+        - AUS200
         - ESP35
         - FRA40
         - GER30
@@ -32,6 +33,10 @@ symbols:
         - UKOil
         - US30
         - USOil
+        - Copper
+        - XPTUSD
+        - XPDUSD
+        - USDOLLAR
     synthetic:
 timeframes:
     natural:
