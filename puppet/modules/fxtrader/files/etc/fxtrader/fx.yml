@@ -18,6 +18,20 @@ symbols:
         - USDJPY
         - XAUUSD
         - XAGUSD
+        - ESP35
+        - FRA40
+        - GER30
+        - HKG33
+        - ITA40
+        - JPN225
+        - NAS100
+        - SPX500
+        - SUI30
+        - SWE30
+        - UK100
+        - UKOil
+        - US30
+        - USOil
     synthetic:
 timeframes:
     natural:
