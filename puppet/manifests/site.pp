@@ -66,6 +66,9 @@ node 'devbox.zonalivre.org' inherits 'default' {
 }
 
 node 'server.fxhistoricaldata.com' inherits 'default' {
+    package { 'mach':
+        ensure  => latest,
+    }
     class { 'site':
         user    => 'joao',
     }
