@@ -1,11 +1,20 @@
 MAILTO=joaocosta@zonalivre.org
 
+#5min data
 */15 21-23 * * 0 joao fx-download-fxcm.pl --timeframes=300 --start="15 days ago" --numItems=10 2>&1
 */15 * * * 1-4 joao fx-download-fxcm.pl --timeframes=300 --start="15 days ago" --numItems=10 2>&1
 */15 0-20 * * 5 joao fx-download-fxcm.pl --timeframes=300 --start="15 days ago" --numItems=10 2>&1
-3,18,38 * * * 0-5 joao fx-download-fxcm.pl --timeframes=3600 --start="15 days ago" --numItems=10 2>&1
+
+#Hourly data
+3,38 21-23 * * 0 joao fx-download-fxcm.pl --timeframes=3600 --start="15 days ago" --numItems=10 2>&1
+3,38 * * * 1-5 joao fx-download-fxcm.pl --timeframes=3600 --start="15 days ago" --numItems=10 2>&1
+
+#Daily data
 6 */3 * * 0-5 joao fx-download-fxcm.pl --timeframes=86400 --start="15 days ago" --numItems=10 2>&1
-31 6 * * 1 joao fx-download-fxcm.pl --timeframes=604800 --start="1900-01-01" --numItems=320 2>&1
+
+#Weekly data
+31 23 * * 0 joao fx-download-fxcm.pl --timeframes=604800 --start="1900-01-01" --numItems=320 2>&1
+31 6 * * 0 joao fx-download-fxcm.pl --timeframes=604800 --start="1900-01-01" --numItems=320 2>&1
 
 #Check errors in fxcm data import once a day
 2 7 * * * joao cat /tmp/mysqlimport.errors 2> /dev/null
