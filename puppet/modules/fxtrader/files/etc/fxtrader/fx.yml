@@ -35,8 +35,10 @@ symbols:
         - USOil
         - Copper
         - XPTUSD
-        - XPDUSD
         - USDOLLAR
+        - NGAS
+        - Bund
+        - EUSTX50
     synthetic:
 timeframes:
     natural:
