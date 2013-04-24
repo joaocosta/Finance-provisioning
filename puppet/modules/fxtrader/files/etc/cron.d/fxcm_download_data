@@ -20,4 +20,4 @@ MAILTO=joaocosta@zonalivre.org
 #Check errors in fxcm data import once a day
 2 7 * * * joao cat /tmp/mysqlimport.errors 2> /dev/null
 
-37 */4 * * 1-4 joao fx-data-up-2-date.pl
+47 */4 * * 1-4 joao fx-data-up-2-date.pl
