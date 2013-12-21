@@ -29,7 +29,7 @@ symbols:
         - NAS100
         - SPX500
         - SUI30
-        - SWE30
+#        - SWE30
         - UK100
         - UKOil
         - US30
