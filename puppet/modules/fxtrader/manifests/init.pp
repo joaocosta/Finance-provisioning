@@ -28,6 +28,7 @@ exec {"fetch_db_schema":
     require     => Package['perl-Finance-HostedTrader'],
     command     => "/usr/bin/fx-create-db-schema.pl > /tmp/db_schema.sql",
     logoutput   => "on_failure",
+    creates     => "/tmp/db_schema.sql",
 }
 
 exec { "setup_db_tables":
