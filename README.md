@@ -29,6 +29,13 @@ To update a submodule
     git commit -m "Updated submodule" mysql
     git push
 
+To update all submodules
+
+    git submodule foreach git checkout master
+    git submodule foreach git pull
+    git commit -am "Updated all submodules"
+    git push
+
 To debug puppet runs:
 
     puppet apply --summarize --evaltrace --modulepath=puppet/modules manifests/somemanifest.pp
