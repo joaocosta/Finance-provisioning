@@ -2,4 +2,4 @@
 
 set -e
 
-sudo qemu-system-x86_64 -hda system.raw -hdb data.raw -net nic -net user -m 1024M -localtime -enable-kvm #-nographic
+sudo qemu-system-x86_64 -hda system.raw -hdb data.raw -net nic -net user -m 1024M -localtime -enable-kvm -redir tcp:2222::22 #-nographic
