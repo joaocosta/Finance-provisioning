@@ -2,12 +2,18 @@
 
 set -e
 
-wget http://ftp.up.pt/fedora/releases/20/Fedora/x86_64/os/isolinux/vmlinuz
-wget http://ftp.up.pt/fedora/releases/20/Fedora/x86_64/os/isolinux/initrd.img
-echo fedora20.ks | cpio -c -o >> initrd.img
+wget -q -N http://ftp.up.pt/fedora/releases/20/Fedora/x86_64/os/isolinux/vmlinuz
+wget -q -N http://ftp.up.pt/fedora/releases/20/Fedora/x86_64/os/isolinux/initrd.img
+cp initrd.img initrd_ks.img
+echo fedora20.ks | cpio -c -o >> initrd_ks.img
 
-dd if=/dev/zero of=system.raw bs=1024M count=6
-dd if=/dev/zero of=data.raw bs=1024M count=20
+if [ ! -f system.raw ]; then
+    dd if=/dev/zero of=system.raw bs=1024M count=5
+fi
+
+if [ ! -f data.raw ]; then
+    dd if=/dev/zero of=data.raw bs=1024M count=20
+fi
 
 
-sudo qemu-system-x86_64 -hda system.raw -hdb data.raw -net nic -net user -m 1024M -localtime -enable-kvm -kernel vmlinuz -initrd initrd.img -append "ks=file:///fedora20.ks" #-nographic
+sudo qemu-system-x86_64 -hda system.raw -hdb data.raw -net nic -net user -m 1024M -localtime -enable-kvm -kernel vmlinuz -initrd initrd_ks.img -append "ks=file:///fedora20.ks" #-nographic
