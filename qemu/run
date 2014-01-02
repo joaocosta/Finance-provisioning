@@ -1,0 +1,5 @@
+#!/bin/bash
+
+set -e
+
+sudo qemu-system-x86_64 -hda system.raw -hdb data.raw -net nic -net user -m 1024M -localtime -enable-kvm #-nographic
