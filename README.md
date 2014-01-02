@@ -20,6 +20,15 @@ To remove a submodule
     Commit and delete the now untracked submodule files.
     http://stackoverflow.com/questions/1260748/how-do-i-remove-a-git-submodule
 
+To update a submodule
+
+    cd submoduledir (ie: cd puppet/modules/mysql)
+    git checkout master
+    git pull
+    cd ..
+    git commit -m "Updated submodule" mysql
+    git push
+
 To debug puppet runs:
 
     puppet apply --summarize --evaltrace --modulepath=puppet/modules manifests/somemanifest.pp
