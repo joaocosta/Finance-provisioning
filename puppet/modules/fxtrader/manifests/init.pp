@@ -5,9 +5,12 @@ Exec {
 }
 
 class { 'mysql::server':
+    package_name    =>  'mariadb-server',
+    service_name    =>  'mariadb',
 }
 
 class { 'mysql::client':
+    package_name    =>  'mariadb',
 }
 
 mysql::db { 'fxcm':
