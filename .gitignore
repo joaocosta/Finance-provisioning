@@ -5,6 +5,6 @@ veewee/iso
 veewee/Fedora-17-x86_64.box
 qemu/data.raw
 qemu/system.raw
-qemu/initrd.img
-qemu/initrd_ks.img
+qemu/system*gz
+qemu/initrd*.img
 qemu/vmlinuz
