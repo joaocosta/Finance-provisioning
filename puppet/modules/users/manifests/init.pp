@@ -34,14 +34,14 @@ class users {
             uid        => "40001",
             gid        => "40001",
             managehome => "true",
-            groups     => ['mach', 'users'],
+            groups     => ['mock', 'users'],
             comment    => "Joao Costa",
             authorized_key_ensure => present,
             authorized_key_type   => "ssh-rsa",
             authorized_key_string => "AAAAB3NzaC1yc2EAAAADAQABAAABAQC6hE75Ox6wDfXVJzXeKdyUBO4o19TtGxboJTI2vR3CE9ZJbODIxSr+tfMZcwmuSF892PiahhVzAA2wJ6LdMtFH6FUIGvjU0i7jIo/x+TmvheH46N9qllo2C2ZlxL/HbpRYIyqEntUYcBQzYBvUwnzoDFgS1GhG4LalYp0U9zlHGOA/Wk7qBjH8Ca1mtPSnxudsb/NwERIjfLbvdX9Fc+vkx6fs3ykJv+p8lPEZkw3kcVAfuyhnXzE7kprSHDuOuQo0FDvCTjy9ISxZPvExKT7bD7vQRlrx9PLzYSWI7/evonWHR8c/jPS8U56ii8YH/rtC/iqo4LiwKFxoxaDdS2wD",
             sudonopasswd => true,
             recursehomedir  => true,
-            require         => Package['mach'],
+            require         => Package['mock'],
             ;
     } # @mkuser
 
@@ -53,10 +53,10 @@ class users {
     @mkgroup {
         'users':
             gid         => '30001',
-            require    => Package['mach'];
-        'mach':
+            require    => Package['mock'];
+        'mock':
             gid         => '30002',
-            require    => Package['mach'];
+            require    => Package['mock'];
     } # @mkgroup
 
 

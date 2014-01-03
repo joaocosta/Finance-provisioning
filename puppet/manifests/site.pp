@@ -35,7 +35,7 @@ node default {
 
     class { 'zonalivre_repo::server':
         base_path   => '/home/joao/rpmbuild',
-        user        => 'apache',
+        user        => 'joao',
         group       => 'apache',
     }
 
@@ -50,7 +50,7 @@ node default {
 node 'devbox.zonalivre.org' inherits 'default' {
 
     Users::Mkuser <| |>
-    Users::Mkgroup <| name == 'mach' |>
+    Users::Mkgroup <| name == 'mock' |>
 
     class { 'buildbox': }
 
@@ -66,7 +66,7 @@ node 'devbox.zonalivre.org' inherits 'default' {
 }
 
 node 'server.fxhistoricaldata.com' inherits 'default' {
-    package { 'mach':
+    package { 'mock':
         ensure  => latest,
     }
     class { 'site':
