@@ -56,7 +56,7 @@ node 'devbox.zonalivre.org' inherits 'default' {
 
     class { 'fxtrader::test': }
 
-    package { 'strace':
+    package { ['strace', 'wget']:
         ensure  => latest,
     }
 
