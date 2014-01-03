@@ -16,10 +16,15 @@ To remove a submodule
 
     Delete the relevant section from the .gitmodules file.
     Delete the relevant section from .git/config.
-    Delete .git/modules/$PATH_TO_MODULE
     Run git rm --cached path_to_submodule (no trailing slash).
-    Commit and delete the now untracked submodule files.
+    Delete the now untracked submodule files.
+    Delete .git/modules/$PATH_TO_MODULE
+    Commit
     http://stackoverflow.com/questions/1260748/how-do-i-remove-a-git-submodule
+
+To branch and track a remote submodule
+    git remote add upstream git@github.com:puppetlabs/puppetlabs-apache.git
+    git fetch upstream
 
 To update a submodule
 
