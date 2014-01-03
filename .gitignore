@@ -3,8 +3,8 @@
 .vagrant
 veewee/iso
 veewee/Fedora-17-x86_64.box
-qemu/data.raw
-qemu/system.raw
-qemu/system*gz
-qemu/initrd*.img
-qemu/vmlinuz
+qemu/fedora20/data.raw
+qemu/fedora20/system.raw
+qemu/fedora20/system*gz
+qemu/fedora20/initrd*.img
+qemu/fedora20/vmlinuz
