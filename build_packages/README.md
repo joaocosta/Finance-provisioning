@@ -2,12 +2,8 @@ This directory contains scripts/definitions needed to build rpm packages which d
 
 Tools used here are:
 
-  - mach - http://www.howtoforge.com/building-rpm-packages-in-a-chroot-environment-using-mach
+  - mock - http://fedoraproject.org/wiki/Projects/Mock
     Creates chroot isolated environments to build packages in
+    https://fedoraproject.org/wiki/Using_Mock_to_test_package_builds
   - fpm - https://github.com/jordansissel/fpm
     A simple to use package builder that can do rpm, deb and more
-
-
-If mach build fails, try cleaning the build chroot:
-  - mach clean
-  - cp /etc/yum.repos.d/zonalivre.repo /var/lib/mach/states/fedora-16-x86_64-updates/yum/yum.repos.d/
