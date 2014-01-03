@@ -1,3 +1,26 @@
+Build with mock
+
+MODS="Devel::SimpleTrace Dist::Zilla::Plugin::Config::Git Dist::Zilla::Role::GitConfig Version::Next"
+
+rm ~/rpmbuild/{SOURCES,SRPMS}/*
+wget -P ~/rpmbuild/SOURCES/ `/opt/src/Finance-provisioning/build_packages/perl/cpan_source_download_url $MODS`
+for file in ~/rpmbuild/SOURCES/*.tar.gz; do cpanspec $file; done
+rpmbuild -bs *spec
+
+foreach SRPM ~/rpmbuild/SRPMS/*src.rpm; do
+  mock rebuild --no-clean $SRPM
+
+  rm /var/lib/mock/fedora-20-x86_64/result/*.src.rpm
+  foreach RPM /var/lib/mock/fedora-20-x86_64/result/*.rpm; do
+    mock install $RPM && rm $RPM
+  done
+
+done
+
+
+
+
+### Old stuff about using mach
 The get_packages.pl script does the following:
 
   - Fetch http://cpan.org/modules/02packages.details.txt.gz
