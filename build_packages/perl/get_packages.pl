@@ -19,6 +19,8 @@ Math::Combinatorics
 Pod::Elemental
 Pod::Elemental::Transformer::List
 String::Truncate
+Dist::Zilla::Plugin::PodWeaver
+Git::Wrapper
 );
 
 
