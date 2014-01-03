@@ -21,15 +21,15 @@ class users {
     #
     # please keep sorted by UID
     @mkuser {
-        'apache':
-            uid         => '48',
-            managehome  => false,
-            home        => '/var/www',
-            comment     => 'Apache',
-            shell       => '/sbin/nologin',
-            mode        => '0755',
-            require     => [ Package['httpd'] ], # The apache user is actually created by a pre-install script in the httpd package. it's only defined here so dependencies on User[apache] can be added.
-            ;
+#        'apache':
+#            uid         => '48',
+#            managehome  => false,
+#            home        => '/var/www',
+#            comment     => 'Apache',
+#            shell       => '/sbin/nologin',
+#            mode        => '0755',
+#            require     => [ Package['httpd'] ], # The apache user is actually created by a pre-install script in the httpd package. it's only defined here so dependencies on User[apache] can be added.
+#            ;
         "joao":
             uid        => "40001",
             gid        => "40001",

@@ -18,11 +18,14 @@ file { '/home/joao/download':
 
 apache::vhost { 'www.fxhistoricaldata.com':
     priority        => '10',
+    directories     => [
+        {   path    =>  '/', provider   => 'location',  sethandler  => 'modperl',   perlresponsehandler => 'Finance::HostedTrader::UI' },
+
+    ],
     docroot         => '/none', # docroot isn't actually used in the custom template, but the puppet module requires a docroot parameter
     port            => '80',
     override        => 'All',
     serveraliases   => ['fxhistoricaldata.com'],
-    template        => 'fxtrader/vhost-fxhistoricaldata.conf.erb',
     require         => [ Package['perl-Finance-HostedTrader-UI'], Class['apache::mod::perl'], Class['fxtrader'] ],
 }
 
