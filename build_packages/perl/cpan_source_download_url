@@ -1,0 +1,23 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+
+use Parse::CPAN::Packages;
+use LWP::Simple;
+
+# http://cpan.org/modules/02packages.details.txt.gz
+
+my $cpan_mirror = "http://search.cpan.org/CPAN/authors/id/";
+
+mirror("http://cpan.org/modules/02packages.details.txt.gz", "02packages.details.txt.gz");
+my $p = Parse::CPAN::Packages->new("02packages.details.txt.gz");
+
+foreach my $package (@ARGV) {
+
+    my $m = $p->package($package);
+    my $d = $m->distribution();
+
+    print "$cpan_mirror" . $d->{prefix}, "\n";
+
+}
