@@ -9,7 +9,7 @@ poweroff
 # Root password
 rootpw --plaintext password
 # System timezone
-timezone Etc/GMT
+timezone UTC
 # Use network installation
 url --url="http://download.fedoraproject.org/pub/fedora/linux/releases/20/Fedora/x86_64/os"
 repo --name=updates
@@ -19,7 +19,7 @@ lang en_GB
 firewall --disabled
 # Network information
 network --onboot yes --bootproto=dhcp --device=ens3 --noipv6
-network --hostname=localhost.localdomain
+network --hostname=devbox.zonalivre.org
 # System authorization information
 auth  --useshadow  --passalgo=sha512
 # Use text mode install
