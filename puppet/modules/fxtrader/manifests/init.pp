@@ -1,5 +1,4 @@
 class fxtrader {
-include mysql
 
 Exec {
     path => ['/usr/bin'],

@@ -3,19 +3,19 @@
 # Managed by Puppet
 # ************************************
 
-NameVirtualHost <%= vhost_name %>:<%= port %>
-<VirtualHost <%= vhost_name %>:<%= port %>>
-  ServerName <%= srvname %>
+NameVirtualHost <%= @vhost_name %>:<%= @port %>
+<VirtualHost <%= @vhost_name %>:<%= @port %>>
+  ServerName <%= @srvname %>
 <% if serveradmin %>
-  ServerAdmin <%= serveradmin %>
+  ServerAdmin <%= @serveradmin %>
 <% end %>
 <% if serveraliases.is_a? Array -%>
 <% serveraliases.each do |name| -%><%= "  ServerAlias #{name}\n" %><% end -%>
 <% elsif serveraliases != '' -%>
 <%= "  ServerAlias #{serveraliases}" %>
 <% end -%>
-  <% if scriptroot %>
-  ScriptAlias <%= scriptvdir %> <%= scriptroot %>
+  <% if @scriptroot %>
+  ScriptAlias <%= @scriptvdir %> <%= @scriptroot %>
   <% end %>
 
   <Location />
@@ -32,9 +32,9 @@ NameVirtualHost <%= vhost_name %>:<%= port %>
 #  Alias /s1 /home/joao/sites/fxhistoricaldata.com/Finance-HostedTrader-UI/root/s1
 #  PerlModule Finance::HostedTrader::UI
 
-  ErrorLog <%= logroot %>/<%= name %>_error.log
+  ErrorLog <%= @logroot %>/<%= @name %>_error.log
   LogLevel warn
-  CustomLog <%= logroot %>/<%= name %>_access.log combined
+  CustomLog <%= @logroot %>/<%= @name %>_access.log combined
   ServerSignature Off
 </VirtualHost>
 
