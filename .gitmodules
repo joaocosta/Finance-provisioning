@@ -13,9 +13,9 @@
 [submodule "puppet/modules/mysql"]
 	path = puppet/modules/mysql
 	url = git://github.com/puppetlabs/puppetlabs-mysql.git
-[submodule "puppet/modules/apache"]
-	path = puppet/modules/apache
-	url = git@github.com:puppetlabs/puppetlabs-apache.git
 [submodule "puppet/modules/concat"]
 	path = puppet/modules/concat
 	url = git@github.com:puppetlabs/puppetlabs-concat.git
+[submodule "puppet/modules/apache"]
+	path = puppet/modules/apache
+	url = git@github.com:joaocosta/puppetlabs-apache.git
