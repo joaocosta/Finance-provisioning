@@ -1,0 +1,34 @@
+#!/bin/bash
+
+set -e
+
+wget -q -N http://mirrors.nfsi.pt/CentOS/6/os/x86_64/images/pxeboot/vmlinuz
+wget -q -N http://mirrors.nfsi.pt/CentOS/6/os/x86_64/images/pxeboot/initrd.img
+
+rm -f initrd_ks
+cp initrd.img initrd_ks.img
+unlzma -S .img initrd_ks.img
+echo ks.cfg | cpio -c -o >> initrd_ks
+lzma -S .img initrd_ks
+
+if [ ! -f system.raw ]; then
+    dd if=/dev/zero of=system.raw bs=1024M count=5
+fi
+
+if [ ! -f data.raw ]; then
+    dd if=/dev/zero of=data.raw bs=1024M count=8
+fi
+
+
+sudo qemu-system-x86_64     \
+        -hda system.raw     \
+        -hdb data.raw       \
+        -net nic -net user  \
+        -m 2048M            \
+        -localtime          \
+        -enable-kvm         \
+        -nographic          \
+        -no-reboot          \
+        -kernel vmlinuz     \
+        -initrd initrd_ks.img   \
+        -append "ks=file:///ks.cfg console=ttyS0 panic=1"
