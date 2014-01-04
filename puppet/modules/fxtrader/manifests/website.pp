@@ -1,5 +1,7 @@
 class fxtrader::website {
-include apache
+
+class { 'apache':
+}
 
 package { 'perl-Finance-HostedTrader-UI':
     ensure  => latest,
