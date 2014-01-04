@@ -45,6 +45,10 @@ node default {
     package { ['vim-enhanced', 'screen']:
         ensure  => latest,
     }
+
+    package { 'mock':
+        ensure  => latest,
+    }
 }
 
 node 'devbox.zonalivre.org' inherits 'default' {
@@ -66,10 +70,7 @@ node 'devbox.zonalivre.org' inherits 'default' {
 }
 
 node 'server.fxhistoricaldata.com' inherits 'default' {
-    package { 'mock':
-        ensure  => latest,
-    }
-    class { 'site':
+   class { 'site':
         user    => 'joao',
     }
 
