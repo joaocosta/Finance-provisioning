@@ -19,6 +19,7 @@ file { $base_path:
 apache::vhost { 'packages.zonalivre.org':
     priority    => '10',
     docroot     => $base_path,
+    ip          => '0.0.0.0',
     port        => '80',
     require     => [ File[$base_path] ],
 }
