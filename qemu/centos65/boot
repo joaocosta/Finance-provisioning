@@ -24,7 +24,7 @@ sudo qemu-system-x86_64     \
         -hda system.raw     \
         -hdb data.raw       \
         -net nic -net user  \
-        -m 2048M            \
+        -m 1024M            \
         -localtime          \
         -enable-kvm         \
         -nographic          \
