@@ -40,7 +40,7 @@ file { "$base_path/wordscheater.com/cgi-bin":
 apache::vhost { 'www.wordscheater.com':
     priority        => '10',
     docroot         => "$base_path/wordscheater.com/web",
-    scriptroot      => "$base_path/wordscheater.com/cgi-bin/",
+    scriptalias     => "$base_path/wordscheater.com/cgi-bin/",
     port            => '80',
     serveraliases   => ['wordscheater.com'],
     require         => [ File["$base_path/wordscheater.com/web"],File["$base_path/wordscheater.com/cgi-bin"], Package['perl-Games-Word'], Package['perl-CGI'], Package['perl-JSON'] ],
