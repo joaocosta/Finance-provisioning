@@ -7,5 +7,5 @@ if [ ! -f system.raw ]; then
     zcat system.f20.gz > system.raw
 fi
 
-sudo qemu-system-x86_64 -hda system.raw -hdb data.raw -net nic -net user -m 1024M -localtime -enable-kvm -redir tcp:2222::22 -virtfs local,path=/home/joao/src/fx/,security_model=passthrough,mount_tag=host_share -nographic 2>&1 > /dev/null < /dev/null &
+sudo qemu-system-x86_64 -hda system.raw -hdb data.raw -net nic -net user -m 1024M -localtime -enable-kvm -redir tcp:2222::22 -redir tcp:8888::80 -virtfs local,path=/home/joao/src/fx/,security_model=passthrough,mount_tag=host_share -nographic 2>&1 > /dev/null < /dev/null &
 # mount -t 9p -o trans=virtio host_share /opt/src -oversion=9p2000.L
