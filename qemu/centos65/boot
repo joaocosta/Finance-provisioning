@@ -1,9 +1,16 @@
 #!/bin/bash
 
-set -e
+# What - Creates raw disk images with a minimal CentOS 6 installed ( from http://mirror.centos.org )
+# Why  - A minimal system can be used to bootstrap software projects
+# When - Run this to boot a new system with nothing but the bare minimum on it
+# How  - Downloads pxeboot kernel+initrd.img, injects a minimal install kickstart file in initrd.img, starts a VM under qemu booting from ROM using the downloaded kernel. Once the systems boots, it will run a netinstall based on the provided kickstart file.
+# Who  - 
 
-wget -q -N http://mirrors.nfsi.pt/CentOS/6/os/x86_64/images/pxeboot/vmlinuz
-wget -q -N http://mirrors.nfsi.pt/CentOS/6/os/x86_64/images/pxeboot/initrd.img
+set -e
+set -x
+
+wget -N http://mirror.centos.org/centos/6/os/x86_64/images/pxeboot/vmlinuz
+wget -N http://mirror.centos.org/centos/6/os/x86_64/images/pxeboot/initrd.img
 
 rm -f initrd_ks
 cp initrd.img initrd_ks.img
@@ -27,8 +34,8 @@ sudo qemu-system-x86_64     \
         -m 1024M            \
         -localtime          \
         -enable-kvm         \
-        -nographic          \
         -no-reboot          \
         -kernel vmlinuz     \
         -initrd initrd_ks.img   \
-        -append "ks=file:///ks.cfg console=ttyS0 panic=1"
+        -append "ks=file:///ks.cfg console=ttyS0 panic=1" \
+        -nographic
