@@ -1,0 +1,26 @@
+#!/bin/bash
+
+MY_PATH=$(dirname `readlink -e $0`)
+. $MY_PATH/build_scripts/COMMON
+
+# What - Install fxtrader system
+# Why  - So it's easy to create fxtrader sandboxes to play with
+# When - After bootstrapping a clean OS
+# How  - Run this script, it depends on a VM running and root being able to ssh with vm_root_ssh_key
+# Who  - 
+
+set -e
+set -x
+
+# Run project specific setup scripts
+for script in build_scripts/*_*; do
+    ssh -p 2222 -o StrictHostKeyChecking=no -i vm_root_ssh_key root@localhost < $script
+done
+
+# Synchronize user home directories
+for dir in users/*; do
+    username=`basename $dir`
+    rsync -e "ssh -p 2222 -o StrictHostKeyChecking=no -i vm_root_ssh_key" -avz ./$dir/ root@localhost:/opt/home/$username/
+done
+
+ssh localhost < fx_install
