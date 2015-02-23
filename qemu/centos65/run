@@ -2,10 +2,12 @@
 
 set -e
 
+# What - Starts a qemu instance in the background
+# Why  - So ssh is available and the VM can be used in a running state
+# When - When the VM needs to be used, ie, for development
+# How  - Starts a VM instance in the background. pid file is written to /var/run
+# Who  - 
 
-if [ ! -f system.raw ]; then
-    zcat system.centos6.gz > system.raw
-fi
 
 sudo qemu-system-x86_64 \
     -hda system.raw     \
@@ -20,6 +22,4 @@ sudo qemu-system-x86_64 \
     -virtfs local,path=/home/joao/src/fx/,security_model=passthrough,mount_tag=host_share \
     -daemonize \
     -display none
-#sudo rpm -Uvh https://yum.puppetlabs.com/el/5/products/x86_64/puppetlabs-release-5-7.noarch.rpm
-#sudo rpm -Uvh http://ftp.fi.muni.cz/pub/linux/fedora/epel/6/i386/epel-release-6-8.noarch.rpm
 # mount -t 9p -o trans=virtio host_share /opt/src -oversion=9p2000.L
