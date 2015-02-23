@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# What - Setup users in a newly bootstrapped OS
+# Why  - So that root is not used for everything and everyone can have their own settings
+# When - After OS bootstrap
+# How  - Not sure yet. Also this ought to be idempotent
+# Who  - 
+
+set -e
+set -x
+
+HOME_BASE_DIR=/opt/home
+
+
+echo "%wheel        ALL=(ALL)       NOPASSWD: ALL" > /etc/sudoers.d/001_wheel_sudo
+chmod 660 /etc/sudoers.d/001_wheel_sudo
+
+mkdir -p $HOME_BASE_DIR
+
+if ! id -u joao &> /dev/null; then
+    useradd -b /opt/home -m joao -u 1000
+fi
+usermod -G wheel -a joao
+
