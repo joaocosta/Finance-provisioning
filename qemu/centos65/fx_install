@@ -9,58 +9,86 @@
 set -e
 set -x
 
-echo "%wheel        ALL=(ALL)       NOPASSWD: ALL" > /etc/sudoers.d/001_wheel_sudo
-chmod 660 /etc/sudoers.d/001_wheel_sudo
-
-useradd -m joao
-usermod -G wheel -a joao
-mkdir /home/joao/.ssh
-echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC6hE75Ox6wDfXVJzXeKdyUBO4o19TtGxboJTI2vR3CE9ZJbODIxSr+tfMZcwmuSF892PiahhVzAA2wJ6LdMtFH6FUIGvjU0i7jIo/x+TmvheH46N9qllo2C2ZlxL/HbpRYIyqEntUYcBQzYBvUwnzoDFgS1GhG4LalYp0U9zlHGOA/Wk7qBjH8Ca1mtPSnxudsb/NwERIjfLbvdX9Fc+vkx6fs3ykJv+p8lPEZkw3kcVAfuyhnXzE7kprSHDuOuQo0FDvCTjy9ISxZPvExKT7bD7vQRlrx9PLzYSWI7/evonWHR8c/jPS8U56ii8YH/rtC/iqo4LiwKFxoxaDdS2wD joaocosta@zonalivre.org" > /home/joao/.ssh/authorized_keys
-chown -R joao: /home/joao/.ssh
-chmod 700 /home/joao/.ssh
-chmod 600 /home/joao/.ssh/authorized_keys
-
+cpanm --sudo -v --notest Dist::Zilla
 
 ### Personal dev setup
+mkdir -p ~/src
 
-git config --global user.name "Joao Costa"
-git config --global user.email "joaocosta@zonalivre.org"
-mkdir ~/src
+# The first time git connects to github.com over ssh, it will ask for manual confirmation of the host key
+# This ssh wrapper prevents that
+echo '/usr/bin/ssh -o StrictHostKeyChecking=no $@'> /tmp/gitssh
+chmod +x /tmp/gitssh
 
 ### lib mysqludf ta
-cd ~/src
-git clone git@github.com:joaocosta/lib_mysqludf_ta.git
-cd ~/src/lib_mysqludf_ta
-./configure
-make
-sudo make install
+if [ ! -d ~/src/lib_mysqludf_ta ]; then
+    cd ~/src
+    GIT_SSH="/tmp/gitssh" git clone git@github.com:joaocosta/lib_mysqludf_ta.git
+    cd ~/src/lib_mysqludf_ta
+    ./configure
+    make
+    sudo make install
+fi
 
 
-for file in ~/src/libmysqludf_ta/setup/*up; do
-  mysql -uroot < $file
+for udf_create_file in ~/src/lib_mysqludf_ta/setup/*up; do
+    udf_name=$(basename $udf_create_file)
+    udf_name=${udf_name:13}
+    udf_name=${udf_name%_*}
+    if test $(mysql -N -uroot -e "select count(1) from mysql.func where name = '${udf_name}'") -ne 1; then
+        echo Installing UDF $udf_name
+        mysql -uroot < $udf_create_file
+    fi
 done
 
 
-### lib ForexConnect (FXCM API) ###
-curl http://fxcodebase.com/bin/forexconnect/1.3.2/ForexConnectAPI-1.3.2-Linux-x86_64.tar.gz | tar zxf - -C ~
 
+
+### lib ForexConnect (FXCM API) ###
+curl http://fxcodebase.com/bin/forexconnect/1.3.2/ForexConnectAPI-1.3.2-Linux-x86_64.tar.gz | sudo tar zxf - -C ~/
+sudo cp -R ~/ForexConnectAPI-1.3.2-Linux-x86_64/include/* /usr/include/.
+sudo cp -R ~/ForexConnectAPI-1.3.2-Linux-x86_64/lib/* /usr/lib64/.
 
 ### Finance::FXCM::Simple
 cd ~/src
-git clone git@github.com:joaocosta/Finance-FXCM-Simple.git
-cd ~/src/Finance-FXCM-Simple
-sudo cpanm -v --installdeps --notest .
-sudo cpanm -v --installdeps --notest Dist::Zilla
-dzil authordeps | sudo cpanm
+if [ ! -d ~/src/Finance-FXCM-Simple ]; then
+    GIT_SSH="/tmp/gitssh" git clone git@github.com:joaocosta/Finance-FXCM-Simple.git
+    cd ~/src/Finance-FXCM-Simple
+else
+    cd ~/src/Finance-FXCM-Simple
+    git pull
+fi
+cpanm --sudo -v --installdeps --notest .
+dzil authordeps | cpanm --sudo
 perl Makefile.PL
-make
-sudo make install
+make test && sudo make install
 
 ### Finance::FXCM::HostedTrader
-cd ~/src
-git clone https://github.com/joaocosta/Finance-HostedTrader
-cd ~/src/Finance-HostedTrader
-dzil authordeps | sudo cpanm
-sudo cpanm Pod::Elemental::Transformer::List
 
-dzil test
+mysql -u root -e 'create database if not exists fxcm'
+
+if test $(mysql -N -uroot -e "select count(1) from mysql.user where user = 'fxcm'") -eq 0; then
+    mysql -u root -e "CREATE USER 'fxcm'@'localhost' IDENTIFIED BY 'fxcm'"
+    mysql -u root -e "GRANT ALL PRIVILEGES ON fxcm.* TO 'fxcm'@'localhost'"
+    mysqladmin -u root flush-privileges
+fi
+
+cd ~/src
+if [ ! -d ~/src/Finance-FXCM-Simple ]; then
+    GIT_SSH="/tmp/gitssh" git clone https://github.com/joaocosta/Finance-HostedTrader
+    cd ~/src/Finance-HostedTrader
+else
+    cd ~/src/Finance-HostedTrader
+    git pull
+fi
+sudo cp -R etc/fxtrader /etc
+dzil authordeps | cpanm --sudo
+cpanm --sudo Pod::Elemental::Transformer::List
+
+rm -fR Finance-HostedTrader-*
+dzil build
+cd Finance-HostedTrader-*
+cpanm --sudo -v --installdeps --notest .
+PERL5LIB=lib bin/fx-create-db-schema.pl | mysql -u fxcm -pfxcm fxcm
+PERL5LIB=lib PATH=$PATH:bin perl t/data/loadTestData.sh ../t/data
+perl Makefile.PL
+make test && sudo make install
