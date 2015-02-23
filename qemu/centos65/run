@@ -18,7 +18,8 @@ sudo qemu-system-x86_64 \
     -redir tcp:8888::80 \
     -pidfile /var/run/vm2222.pid \
     -virtfs local,path=/home/joao/src/fx/,security_model=passthrough,mount_tag=host_share \
-    -nographic 2>&1 > /dev/null < /dev/null &
+    -daemonize \
+    -display none
 #sudo rpm -Uvh https://yum.puppetlabs.com/el/5/products/x86_64/puppetlabs-release-5-7.noarch.rpm
 #sudo rpm -Uvh http://ftp.fi.muni.cz/pub/linux/fedora/epel/6/i386/epel-release-6-8.noarch.rpm
 # mount -t 9p -o trans=virtio host_share /opt/src -oversion=9p2000.L

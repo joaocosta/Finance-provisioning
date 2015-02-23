@@ -67,7 +67,8 @@ sudo qemu-system-x86_64 \
     -redir tcp:8888::80 \
     -virtfs local,path=/home/,security_model=passthrough,mount_tag=host_share \
     -pidfile /var/run/vm2222.pid \
-    -nographic 2>&1 > /dev/null < /dev/null &
+    -daemonize \
+    -display none
 
 ### Wait for ssh to be available
 set +e
