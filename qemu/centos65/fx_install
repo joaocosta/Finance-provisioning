@@ -9,8 +9,6 @@
 set -e
 set -x
 
-cpanm --sudo -v --notest Dist::Zilla
-
 ### Personal dev setup
 mkdir -p ~/src
 
@@ -62,7 +60,7 @@ dzil authordeps | cpanm --sudo
 perl Makefile.PL
 make test && sudo make install
 
-### Finance::FXCM::HostedTrader
+### Finance::HostedTrader
 
 mysql -u root -e 'create database if not exists fxcm'
 
@@ -73,7 +71,7 @@ if test $(mysql -N -uroot -e "select count(1) from mysql.user where user = 'fxcm
 fi
 
 cd ~/src
-if [ ! -d ~/src/Finance-FXCM-Simple ]; then
+if [ ! -d ~/src/Finance-HostedTrader ]; then
     GIT_SSH="/tmp/gitssh" git clone https://github.com/joaocosta/Finance-HostedTrader
     cd ~/src/Finance-HostedTrader
 else
