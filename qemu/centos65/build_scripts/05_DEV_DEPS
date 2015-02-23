@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# What - Setup base software needed by this project
+# Why  - Pre-requisites for dev
+# When - After OS bootstrap
+# How  - Not sure yet. Also this ought to be idempotent
+# Who  - 
+
+set -e
+set -x
+
+yum -y install gcc-c++ mysql-server mysql-devel gcc libtool perl-ExtUtils-MakeMaker
+
+# Install cpanm
+curl -L "http://cpanmin.us" | perl - --self-upgrade
+
+
+chkconfig mysqld on
+
+# Install heavyweight deps upfront
+/usr/local/bin/cpanm -v --notest Dist::Zilla
+/usr/local/bin/cpanm -v --notest Moose
+
