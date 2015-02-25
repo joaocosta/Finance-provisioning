@@ -12,27 +12,41 @@ MY_PATH=$(dirname `readlink -e $0`)
 set -e
 set -x
 
+
+IONICE=`which ionice 2> /dev/null`
+test -n "$IONICE" && IONICE="$IONICE -c 3"
+
+
 echo_info Fetching kernel and initrd image if needed
 wget -N http://mirror.centos.org/centos/6/os/x86_64/images/pxeboot/vmlinuz
 wget -N http://mirror.centos.org/centos/6/os/x86_64/images/pxeboot/initrd.img
 
-echo_info Injecting kickstart file in the initrd image.
-### Doing this avoids the dependency on an external PXE boot server
-rm -f initrd_ks
-cp initrd.img initrd_ks.img
-unlzma -S .img initrd_ks.img
-echo ks.cfg | cpio -c -o >> initrd_ks
-lzma -S .img initrd_ks
-
-
-echo_info Creating raw system image disk file if needed
-if [ ! -f system.raw ]; then
-    dd if=/dev/zero of=system.raw bs=1024M count=5
+if ! test -f ks.cfg.installed || ! cmp ks.cfg ks.cfg.installed > /dev/null; then
+    echo_info Injecting kickstart file in the initrd image.
+    ### Doing this avoids the dependency on an external PXE boot server
+    rm -f initrd_ks
+    cp initrd.img initrd_ks.img
+    unlzma -S .img initrd_ks.img
+    echo ks.cfg | cpio -c -o >> initrd_ks
+    lzma -S .img initrd_ks
+    cp ks.cfg ks.cfg.installed
+else
+    echo_info Reusing initrd image with kickstart already injected
 fi
 
-echo_info Creating raw data image disk file if needed
+
+if [ ! -f system.raw ]; then
+    echo_info Creating raw system image disk file
+    $IONICE dd if=/dev/zero of=system.raw bs=1024M count=5
+else
+    echo_info Reusing existing raw system image disk file
+fi
+
 if [ ! -f data.raw ]; then
-    dd if=/dev/zero of=data.raw bs=1024M count=8
+    echo_info Creating raw data image disk file
+    $IONICE dd if=/dev/zero of=data.raw bs=1024M count=8
+else
+    echo_info Reusing existing raw data image disk file
 fi
 
 
