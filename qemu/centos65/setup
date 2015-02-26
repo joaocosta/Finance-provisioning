@@ -6,7 +6,7 @@ MY_PATH=$(dirname `readlink -e $0`)
 # What - Install fxtrader system
 # Why  - So it's easy to create fxtrader sandboxes to play with
 # When - After bootstrapping a clean OS
-# How  - Run this script, it depends on a VM running and root being able to ssh with vm_root_ssh_key
+# How  - ./setup | tee setup.log # Depends on a VM running (use the "run" script to start it) and root being able to ssh with vm_root_ssh_key. vm_root_ssh_key is setup in ks.cfg .
 # Who  - 
 
 set -e
@@ -14,13 +14,16 @@ set -x
 
 # Run project specific setup scripts
 for script in build_scripts/*_*; do
+    echo_info Running $(basename $script)
     ssh -p 2222 -o StrictHostKeyChecking=no -i vm_root_ssh_key root@localhost < $script
 done
 
 # Synchronize user home directories
 for dir in users/*; do
     username=`basename $dir`
+    echo_info Copying files for user $username
     rsync -e "ssh -p 2222 -o StrictHostKeyChecking=no -i vm_root_ssh_key" -avz ./$dir/ root@localhost:/opt/home/$username/
 done
 
+echo_info Running fx_install as `whoami`
 ssh localhost < fx_install

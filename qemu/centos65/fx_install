@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# What - Setup post installation, so that users can ssh to minimal system
-# Why  - Bootstrap installation only creates a minimal with root only account. By default, root can't ssh.
-# When - After bootstrap, before the system can be used
-# How  -
+# What - Install fx_trader specific packages
+# Why  -
+# When - After general setup, before the system can be used
+# How  - The script tries to be idempotent, so it can be run over and over again with no side effects.
 # Who  - 
 
 set -e
@@ -16,6 +16,8 @@ mkdir -p ~/src
 # This ssh wrapper prevents that
 echo '/usr/bin/ssh -o StrictHostKeyChecking=no $@'> /tmp/gitssh
 chmod +x /tmp/gitssh
+
+sudo service mysqld restart
 
 ### lib mysqludf ta
 if [ ! -d ~/src/lib_mysqludf_ta ]; then
