@@ -18,6 +18,7 @@ sudo qemu-system-x86_64 \
     -enable-kvm         \
     -redir tcp:2222::22 \
     -redir tcp:8888::80 \
+    -redir tcp:3000::3000 \
     -pidfile /var/run/vm2222.pid \
     -virtfs local,path=/home/joao/src/fx/,security_model=passthrough,mount_tag=host_share \
     -daemonize \
