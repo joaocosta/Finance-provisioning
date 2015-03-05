@@ -21,3 +21,4 @@ chkconfig mysqld on
 /usr/local/bin/cpanm -v --notest Dist::Zilla
 /usr/local/bin/cpanm -v --notest Moose
 
+/usr/local/bin/cpanm -v --notest CPAN Catalyst::Devel Catalyst::Model::DBIC::Schema Catalyst::View::TT JSON
