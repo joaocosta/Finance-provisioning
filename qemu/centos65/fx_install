@@ -92,3 +92,12 @@ PERL5LIB=lib bin/fx-create-db-schema.pl | mysql -u fxcm -pfxcm fxcm
 PERL5LIB=lib PATH=$PATH:bin perl t/data/loadTestData.sh ../t/data
 perl Makefile.PL
 make test && sudo make install
+
+cd ~/src
+if [ ! -d ~/src/Finance-HostedTrader-UI ]; then
+    GIT_SSH="/tmp/gitssh" git clone https://github.com/joaocosta/Finance-HostedTrader-UI
+    cd ~/src/Finance-HostedTrader-UI
+else
+    cd ~/src/Finance-HostedTrader-UI
+    git pull
+fi
