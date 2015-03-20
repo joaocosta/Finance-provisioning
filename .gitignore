@@ -8,3 +8,4 @@ qemu/*/system.raw
 qemu/*/system*gz
 qemu/*/initrd*
 qemu/*/vmlinuz
+qemu/*/ks.cfg.installed
