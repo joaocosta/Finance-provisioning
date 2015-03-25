@@ -26,9 +26,9 @@ if ! test -f ks.cfg.installed || ! cmp ks.cfg ks.cfg.installed > /dev/null; then
     ### Doing this avoids the dependency on an external PXE boot server
     rm -f initrd_ks
     cp initrd.img initrd_ks.img
-    unlzma -S .img initrd_ks.img
+    xz --decompress -S .img initrd_ks.img
     echo ks.cfg | cpio -c -o >> initrd_ks
-    lzma -S .img initrd_ks
+    xz --format=lzma -S .img initrd_ks
     cp ks.cfg ks.cfg.installed
 else
     echo_info Reusing initrd image with kickstart already injected
