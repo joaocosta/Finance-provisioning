@@ -3,7 +3,7 @@ MAILTO=joaocosta@zonalivre.org
 #5min data
 */15 21-23 * * 0 joao fx-download-fxcm.pl --timeframes=300 --start="15 days ago" --numItems=10 2>> /tmp/download.log
 */15 * * * 1-4 joao fx-download-fxcm.pl --timeframes=300 --start="15 days ago" --numItems=10 2>> /tmp/download.log
-*/15 0-20 * * 5 joao fx-download-fxcm.pl --timeframes=300 --start="15 days ago" --numItems=10 2>> /tmp/download.log
+*/15 0-21 * * 5 joao fx-download-fxcm.pl --timeframes=300 --start="15 days ago" --numItems=10 2>> /tmp/download.log
 
 #Hourly data
 4 22 * * 0 joao fx-download-fxcm.pl --timeframes=3600 --start="15 days ago" --numItems=10 2>&1
