@@ -1,21 +1,21 @@
 MAILTO=joaocosta@zonalivre.org
 
 #5min data
-*/15 21-23 * * 0 joao fx-download-fxcm.pl --timeframes=300 --start="15 days ago" --numItems=10 2>> /tmp/download.log
-*/15 * * * 1-4 joao fx-download-fxcm.pl --timeframes=300 --start="15 days ago" --numItems=10 2>> /tmp/download.log
-*/15 0-21 * * 5 joao fx-download-fxcm.pl --timeframes=300 --start="15 days ago" --numItems=10 2>> /tmp/download.log
+*/15 21-23 * * 0 joao fx-download-fxcm.pl --timeframes=300 --numItems=10 2>> /tmp/download.log
+*/15 * * * 1-4 joao fx-download-fxcm.pl --timeframes=300 --numItems=10 2>> /tmp/download.log
+*/15 0-21 * * 5 joao fx-download-fxcm.pl --timeframes=300 --numItems=10 2>> /tmp/download.log
 
 #Hourly data
-4 22 * * 0 joao fx-download-fxcm.pl --timeframes=3600 --start="15 days ago" --numItems=10 2>&1
-4 */2 * * 1-5 joao fx-download-fxcm.pl --timeframes=3600 --start="15 days ago" --numItems=10 2>&1
+4 22 * * 0 joao fx-download-fxcm.pl --timeframes=3600 --numItems=10 2>&1
+4 */2 * * 1-5 joao fx-download-fxcm.pl --timeframes=3600 --numItems=10 2>&1
 
 #Daily data
-7 22 * * 0 joao fx-download-fxcm.pl --timeframes=86400 --start="15 days ago" --numItems=10 2>&1
-6 */3 * * 1-5 joao fx-download-fxcm.pl --timeframes=86400 --start="15 days ago" --numItems=10 2>&1
+7 22 * * 0 joao fx-download-fxcm.pl --timeframes=86400 --numItems=10 2>&1
+6 */3 * * 1-5 joao fx-download-fxcm.pl --timeframes=86400 --numItems=10 2>&1
 
 #Weekly data
-31 23 * * 0 joao fx-download-fxcm.pl --timeframes=604800 --start="1900-01-01" --numItems=320 2>&1
-31 6 * * 1 joao fx-download-fxcm.pl --timeframes=604800 --start="1900-01-01" --numItems=320 2>&1
+31 23 * * 0 joao fx-download-fxcm.pl --timeframes=604800 --numItems=320 2>&1
+31 6 * * 1 joao fx-download-fxcm.pl --timeframes=604800 --numItems=320 2>&1
 
 #Check errors in fxcm data import once a day
 2 7 * * * joao cat /tmp/mysqlimport.errors 2> /dev/null
