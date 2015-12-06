@@ -4,8 +4,7 @@
 veewee/iso
 veewee/Fedora-17-x86_64.box
 qemu/*/data.raw
-qemu/*/system.raw
-qemu/*/system*gz
+qemu/*/system.raw*
 qemu/*/initrd*
 qemu/*/vmlinuz
 qemu/*/ks.cfg.installed
