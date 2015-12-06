@@ -10,8 +10,8 @@ set -e
 
 
 sudo qemu-system-x86_64 \
-    -hda system.raw     \
-    -hdb data.raw       \
+    -drive file=system.raw,format=raw,index=0,media=disk \
+    -drive file=data.raw,format=raw,index=1,media=disk \
     -net nic -net user  \
     -m 1024M            \
     -localtime          \
