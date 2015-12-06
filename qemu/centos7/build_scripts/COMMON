@@ -1,0 +1,70 @@
+#!/bin/bash
+
+set -e
+
+function echo_info {
+    echo_color 2 $*
+}
+
+function echo_warn {
+    echo_color 6 $*
+}
+
+function echo_error {
+    echo_color 1 $*
+}
+
+function echo_color {
+    COLOR=$1
+    NOW=$(date "+%Y-%m-%d %H:%M:%S")
+
+    if [ -t 1 ]; then # If stdout not being redirect, output colour control characters
+        tput bold
+        tput setaf $COLOR
+    fi
+    echo "[$NOW] ${*:2}"
+    if [ -t 1 ]; then
+        tput sgr0
+    fi
+}
+
+function check_envvars_defined {
+    for check_var in $@; do
+        eval X=\$$check_var
+        if [ -z "$X" ]; then
+            echo_error $check_var not set
+            exit 1
+        fi
+    done
+}
+
+function wait_till_exists {
+
+timeout=${2:-60}
+
+set +e
+counter=0
+until ls -l $1 &> /dev/null
+do
+  if [ $counter -gt $timeout ]; then
+    echo_error "Timeout waiting for $1 to exist"
+    exit 1
+  fi
+  echo_warn "Waiting for $1 to exist: $counter of $timeout"
+  sleep 1
+  ((counter++))
+done
+set -e
+}
+
+wait_any_pid(){
+
+    for pid in "$@"; do
+        while kill -0 "$pid"; do
+            sleep 0.5
+        done
+    done
+}
+
+echo_info '------------------------------'
+echo_info Running $0

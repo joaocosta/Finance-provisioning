@@ -1,0 +1,60 @@
+#!/bin/bash
+
+MY_PATH=$(dirname `readlink -e $0`)
+. $MY_PATH/build_scripts/COMMON
+
+# What - Creates raw disk images with a minimal CentOS 7 installed ( from http://mirror.centos.org )
+# Why  - A minimal system can be used to bootstrap software projects
+# When - Run this to boot a new system with nothing but the bare minimum on it, ie, the very first thing to do in a new project
+# How  - Downloads pxeboot kernel+initrd.img, injects a minimal install kickstart file in initrd.img, starts a VM under qemu booting from ROM using the downloaded kernel. Once the systems boots, it will run a netinstall based on the provided kickstart file.
+# Who  - 
+
+set -e
+set -x
+
+
+IONICE=`which ionice 2> /dev/null`
+test -n "$IONICE" && IONICE="$IONICE -c 3"
+
+
+echo_info Fetching kernel and initrd image if needed
+wget -N http://mirror.centos.org/centos/7/os/x86_64/images/pxeboot/vmlinuz
+wget -N http://mirror.centos.org/centos/7/os/x86_64/images/pxeboot/initrd.img
+
+if ! test -f ks.cfg.installed || ! cmp ks.cfg ks.cfg.installed > /dev/null; then
+    echo_info Injecting kickstart file in the initrd image.
+    ### Doing this avoids the dependency on an external PXE boot server
+    rm -f initrd_ks
+    cp initrd.img initrd_ks.img
+    xz --decompress -S .img initrd_ks.img
+    echo ks.cfg | cpio -c -o >> initrd_ks
+    xz --format=lzma -S .img initrd_ks
+    cp ks.cfg ks.cfg.installed
+else
+    echo_info Reusing initrd image with kickstart already injected
+fi
+
+
+if [ ! -f system.raw ]; then
+    echo_info Creating raw system image disk file
+    $IONICE dd if=/dev/zero of=system.raw bs=1024M count=10
+else
+    echo_info Reusing existing raw system image disk file
+fi
+
+### Boot from kernel and initrd image which will 
+### do an OS install from the provided kickstart file
+echo_info Booting system and installing via kickstart
+sudo qemu-system-x86_64     \
+        -drive file=system.raw,format=raw,index=0,media=disk     \
+        -net nic -net user  \
+        -m 1024M            \
+        -localtime          \
+        -enable-kvm         \
+        -no-reboot          \
+        -kernel vmlinuz     \
+        -initrd initrd_ks.img   \
+        -pidfile /var/run/vm2222.pid \
+        -append "ks=file:///ks.cfg console=ttyS0 panic=1" \
+        -nographic
+
