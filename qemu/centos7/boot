@@ -37,6 +37,5 @@ sudo qemu-system-x86_64     \
         -no-reboot          \
         -kernel vmlinuz     \
         -initrd initrd_ks.img   \
-        -pidfile /var/run/vm2222.pid \
         -append "inst.ks=file:/ks.cfg console=ttyS0 panic=1" \
         -nographic
