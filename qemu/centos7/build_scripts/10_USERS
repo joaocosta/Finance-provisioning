@@ -9,7 +9,7 @@
 set -e
 set -x
 
-HOME_BASE_DIR=/opt/home
+HOME_BASE_DIR=/home
 
 
 echo "%wheel        ALL=(ALL)       NOPASSWD: ALL" > /etc/sudoers.d/001_wheel_sudo
