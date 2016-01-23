@@ -1,52 +1,35 @@
 #!/bin/bash
 
-MY_PATH=$(dirname `readlink -e $0`)
-. $MY_PATH/build_scripts/COMMON
-
 # What - Creates raw disk images with a minimal CentOS 7 installed ( from http://mirror.centos.org )
 # Why  - A minimal system can be used to bootstrap software projects
 # When - Run this to boot a new system with nothing but the bare minimum on it, ie, the very first thing to do in a new project
 # How  - Downloads pxeboot kernel+initrd.img, injects a minimal install kickstart file in initrd.img, starts a VM under qemu booting from ROM using the downloaded kernel. Once the systems boots, it will run a netinstall based on the provided kickstart file.
 # Who  - 
 
-set -e
-set -x
+set -euo pipefail
 
-
-IONICE=`which ionice 2> /dev/null`
-test -n "$IONICE" && IONICE="$IONICE -c 3"
-
-
-echo_info Fetching kernel and initrd image if needed
+echo Fetching kernel and initrd image if needed
 wget -N http://mirror.centos.org/centos/7/os/x86_64/images/pxeboot/vmlinuz
 wget -N http://mirror.centos.org/centos/7/os/x86_64/images/pxeboot/initrd.img
 
-if ! test -f ks.cfg.installed || ! cmp ks.cfg ks.cfg.installed > /dev/null; then
-    echo_info Injecting kickstart file in the initrd image.
-    ### Doing this avoids the dependency on an external PXE boot server
-    rm -f initrd_ks
-    cp initrd.img initrd_ks.img
-    xz --decompress -S .img initrd_ks.img
-    echo ks.cfg | cpio -c -o >> initrd_ks
-    xz --format=lzma -S .img initrd_ks
-    cp ks.cfg ks.cfg.installed
-else
-    echo_info Reusing initrd image with kickstart already injected
-fi
+# Injecting the kickstart file into the initrd image prevents the dependency
+# on an external PXE boot or HTTP server to serve the kickstart file
+echo Injecting kickstart file in the initrd image.
+cp initrd.img initrd_ks.img
+echo ks.cfg | cpio -c -o >> initrd_ks.img
 
-
-if [ ! -f system.raw ]; then
-    echo_info Creating raw system image disk file
-    $IONICE dd if=/dev/zero of=system.raw bs=1024M count=10
+if [ ! -f system.qcow2 ]; then
+    echo Creating new system image disk file
+    qemu-img create -f qcow2 -o preallocation=falloc system.qcow2 10G
 else
-    echo_info Reusing existing raw system image disk file
+    echo Reusing existing system image disk file
 fi
 
 ### Boot from kernel and initrd image which will 
 ### do an OS install from the provided kickstart file
-echo_info Booting system and installing via kickstart
+echo Booting system and installing via kickstart
 sudo qemu-system-x86_64     \
-        -drive file=system.raw,format=raw,index=0,media=disk     \
+        -drive file=system.qcow2,format=qcow2,index=0,media=disk     \
         -net nic -net user  \
         -m 1024M            \
         -localtime          \
@@ -55,6 +38,5 @@ sudo qemu-system-x86_64     \
         -kernel vmlinuz     \
         -initrd initrd_ks.img   \
         -pidfile /var/run/vm2222.pid \
-        -append "ks=file:///ks.cfg console=ttyS0 panic=1" \
+        -append "inst.ks=file:/ks.cfg console=ttyS0 panic=1" \
         -nographic
-
