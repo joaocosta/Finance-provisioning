@@ -14,6 +14,8 @@ mkdir -p ~/src
 
 # The first time git connects to github.com over ssh, it will ask for manual confirmation of the host key
 # This ssh wrapper prevents that
+# Alternatively, consider this instead:
+# https://en.wikibooks.org/wiki/OpenSSH/Client_Configuration_Files#Manually_Adding_Public_Keys_to_.7E.2F.ssh.2Fknown_hosts
 echo '/usr/bin/ssh -o StrictHostKeyChecking=no $@'> /tmp/gitssh
 chmod +x /tmp/gitssh
 
